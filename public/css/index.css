@@ -1,0 +1,15 @@
+body {
+    background: #F0F0F0
+}
+
+#loginCard {
+    width: 400px;
+ }
+
+.modal {
+    width: 300px;
+}
+
+input[type=submit] {
+    color: white;
+}
