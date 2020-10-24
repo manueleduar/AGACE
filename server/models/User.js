@@ -4,8 +4,13 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const Schema = mongoose.Schema;
 const User = new Schema({
     username: String,
-    password: String
+    password: String,
+    email: String,
+    firstName: String,
+    lastName: String,
 });
 
-User.plugin(passportLocalMongoose);
-module.exports = Users = mongoose.model('userInfo', User, 'userInfo');
+User.plugin(passportLocalMongoose, {
+    selectFields: "username email firstName lastName"
+});
+module.exports = Users = mongoose.model('users', User, 'users');
