@@ -1,0 +1,32 @@
+table{
+    margin-top: 5%;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    border-spacing: 2px;
+    border: 1px solid #ddd;
+    
+}
+th{
+    background-color: white;
+    padding: 15px;
+    text-align: left;
+    border: 1px solid black;
+}
+
+td{
+    padding: 15px;
+    text-align: left;
+    border: 1px solid black;
+}
+tr:hover{
+    background-color: #dfdfdf;
+}
+tr.header > th{
+    background-color: #77b7ff;
+}
+
+.tableContainer{
+    
+    padding: 0 10% 0 10%;
+}

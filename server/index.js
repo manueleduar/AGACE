@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
-const port  = process.env.PORT || 3000;
 const passport = require('passport');
+const port  = process.env.PORT || 3000;
 const db = require('./db/setup');
 const path = require('path');
 const auth = require('./routes/auth');
 const publicDirectory = path.resolve('./public');
+const apidenuncias = require('./api/denuncias/denuncias');
 
 
 require('dotenv').config();
@@ -17,6 +18,7 @@ require('express-session')({
 
 db.init();
 
+
 /**
  * Application middlewares
  */
@@ -27,11 +29,17 @@ app.use(passport.session());
 app.use(express.static(publicDirectory));
 
 app.use("/", auth);
+app.use('/api/denuncias',apidenuncias);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(publicDirectory, "index.html"));
 })
 
+// TODO: Move to separate router, see "routes/"
+app.get('/seguimiento', (req, res) => {
+  res.sendFile(path.join(publicDirectory, "seguimiento.html"));
+});
+  
 
 app.listen(port, (req, res) => {
     console.log(`App listening on port ${port}`);
