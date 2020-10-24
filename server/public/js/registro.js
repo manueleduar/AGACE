@@ -7,9 +7,12 @@ function init(){
         if (password.value != confPassword.value) {
             confPassword.classList.remove("valid");
             confPassword.classList.add("invalid");
-        } else {
+        } else if (password.value != ""){
             confPassword.classList.remove("invalid")
             confPassword.classList.add("valid");
+        }else{
+            confPassword.classList.remove("invalid");
+            confPassword.classList.remove("valid");
         }
       });
 
