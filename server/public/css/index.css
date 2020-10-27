@@ -9,3 +9,9 @@ body {
 .modal {
     width: 300px;
 }
+
+.col {
+    width: auto;
+    margin-left: auto;
+}
+
