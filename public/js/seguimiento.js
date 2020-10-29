@@ -7,13 +7,13 @@ function load(){
         data.forEach(element => {
             $("#denuncias").append(
                 '<tr>'+
-                    '<td>'+element.tema+'</td>'+
+                    '<td>'+element.tema.nombre+'</td>'+
                     '<td>'+element.descripcion+'</td>'+
                     '<td>'+element.admasignada+'</td>'+
-                    '<td>'+element.rfc.length+'</td>'+
+                    '<td>'+element.rfcs.length+'</td>'+
                     '<td>'+element.avance+'%</td>'+
                     '<td>'+element.admlider+'</td>'+
-                    '<td>'+element.rfctotales.length+'</td>'+
+                    '<td>'+element.rfcs.length+'</td>'+
                     '<td>'+element.avanceaccpce+'%</td>'+
                     '<td> <a class="waves-effect waves-light btn">Editar</a></td>'+
                 '</tr>'

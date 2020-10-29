@@ -1,6 +1,9 @@
 let express = require('express');
 let router = express.Router();
 let {DenunciaLists} = require('../../models/Denuncia');
+let {TemasList} = require('../../models/Tema');
+let { nanoid } = require( 'nanoid');
+
 
 
 router.get( "/", ( req, res, next ) => {  
@@ -22,21 +25,25 @@ router.get( "/", ( req, res, next ) => {
 router.post("/", (req, res, next) => {
     let newDenuncia = req.body;
     
+    newDenuncia.rfcs = JSON.parse(newDenuncia.rfcs)
     console.log(newDenuncia);
+
     if (!newDenuncia.tema ||
         !newDenuncia.descripcion ||
-        !newDenuncia.admasignada ||
-        !newDenuncia.rfc ||
-        !newDenuncia.avance ||
+        !newDenuncia.origen ||
         !newDenuncia.admlider ||
-        !newDenuncia.rfctotales||
-        !newDenuncia.avanceaccpce) {
+        !newDenuncia.mediorecep ) {
         res.statusMessage = "Missing field in the body";
         return res.status(406).json( {
             message: "Missing field in the body",
             status: 406
         });
     }
+    newDenuncia.fecha = new Date();
+    newDenuncia.rfcs.forEach(element => {
+        element.id = nanoid(8);
+    });
+    console.log(newDenuncia);
     DenunciaLists.post(newDenuncia)
         .then(newDenuncia => {
             return res.status(201).json(newDenuncia);
@@ -50,9 +57,21 @@ router.post("/", (req, res, next) => {
                 status: 500
             })
         });
-
-
 });
+/* router.post("/del", (req, res, next) => {
+    DenunciaLists.deleteAll().then(newDenuncia => {
+        return res.status(201).json(newDenuncia);
+    })
+    .catch(err => {
+        res.statusMessage = err;
+        console.log(err)
+
+        return res.status(500).json({
+            message: err,
+            status: 500
+        })
+    });
+}); */
 
 
 module.exports = router;

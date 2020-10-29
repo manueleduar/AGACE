@@ -7,6 +7,8 @@ const path = require('path');
 const auth = require('./routes/auth');
 const publicDirectory = path.resolve('./public');
 const apidenuncias = require('./api/denuncias/denuncias');
+const apitemas = require('./api/temas/temas');
+
 
 
 require('dotenv').config();
@@ -30,6 +32,8 @@ app.use(express.static(publicDirectory));
 
 app.use("/", auth);
 app.use('/api/denuncias',apidenuncias);
+app.use('/api/temas',apitemas);
+
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(publicDirectory, "index.html"));
@@ -39,6 +43,11 @@ app.get("/", (req, res) => {
 app.get('/seguimiento', (req, res) => {
   res.sendFile(path.join(publicDirectory, "seguimiento.html"));
 });
+
+app.get('/denuncias', (req, res) => {
+    res.sendFile(path.join(publicDirectory, "denuncias.html"));
+  });
+    
   
 
 app.listen(port, (req, res) => {

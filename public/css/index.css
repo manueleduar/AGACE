@@ -10,6 +10,11 @@ body {
     width: 300px;
 }
 
+.col {
+    width: auto;
+    margin-left: auto;
+}
+
 input[type=submit] {
     color: white;
 }
