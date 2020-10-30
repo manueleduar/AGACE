@@ -29,29 +29,29 @@ function load (){
                     rfc: $("#rfc"+rfc).val(),
                     tipo: $("#tipo"+rfc).val(),
                     fecha: new Date(), 
-                    adminasig: '', 
+                    administracionAsignada: '', 
                     estatus: '', 
                     idprog: '',
-                    causarech: '',
+                    causaRechazo: '',
                 }
             )
         });
-        let sendRfc = JSON.stringify(rfcs);
-        console.log(rfcs);
+        let sendData = {
+                descripcion: $('#desc').val(),
+                tema: $('#temaS').val(),
+                adminstracionLider: $('#adm').val(),
+                origen: $('#orig').val(),
+                medioRecepcion: $('#medio').val(),
+                rfcs : rfcs
+        };
+        sendData = JSON.stringify(sendData);
 
         $.ajax({
             url: '/api/denuncias',
             type: 'post',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            data: {
-                descripcion: $('#desc').val(),
-                tema: $('#temaS').val(),
-                admlider: $('#adm').val(),
-                origen: $('#orig').val(),
-                mediorecep: $('#medio').val(),
-                rfcs : sendRfc
-            },
+            data: sendData,
             success:function(){
                 console.log()
                 // Whatever you want to do after the form is successfully submitted

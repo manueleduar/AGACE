@@ -24,15 +24,13 @@ router.get( "/", ( req, res, next ) => {
 
 router.post("/", (req, res, next) => {
     let newDenuncia = req.body;
-    
-    newDenuncia.rfcs = JSON.parse(newDenuncia.rfcs)
     console.log(newDenuncia);
 
     if (!newDenuncia.tema ||
         !newDenuncia.descripcion ||
         !newDenuncia.origen ||
-        !newDenuncia.admlider ||
-        !newDenuncia.mediorecep ) {
+        !newDenuncia.adminstracionLider ||
+        !newDenuncia.medioRecepcion ) {
         res.statusMessage = "Missing field in the body";
         return res.status(406).json( {
             message: "Missing field in the body",

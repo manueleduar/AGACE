@@ -7,17 +7,17 @@ const Denuncia = new Schema({
     fecha: Date,
     rfcs: [{id: String, 
             fecha: Date, 
-            adminasig: String, 
+            administracionAsignada: String, 
             rfc: String, 
             tipo: String, 
             estatus:String, 
             procedio:Boolean,
             idprog: String,
-            causarech: String,
+            causaRechazo: String,
             Observaciones: [String] }],
     origen: String,
-    mediorecep: String,
-    admlider: String,
+    medioRecepcion: String,
+    adminstracionLider: String,
 });
 
 let denuncias = mongoose.model('denuncias', Denuncia, 'denuncias');
