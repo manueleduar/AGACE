@@ -1,8 +1,10 @@
 let express = require('express');
 let router = express.Router();
 let {DenunciaLists} = require('../../models/Denuncia');
-let {TemasList} = require('../../models/Tema');
 let { nanoid } = require( 'nanoid');
+const fs = require('fs');
+const path = require('path');
+const filesDirectory = path.resolve('./server');
 
 
 
@@ -55,6 +57,27 @@ router.post("/", (req, res, next) => {
                 status: 500
             })
         });
+});
+
+router.post("/archivo", (req, res, next) => { 
+    var fstream;
+    var id = req.query.id;
+    console.log(id)
+    if (!fs.existsSync(filesDirectory + '/files/' + id  +"/")){
+        fs.mkdirSync(filesDirectory + '/files/' + id +"/",  {recursive: true});
+    }
+    req.pipe(req.busboy);
+    req.busboy.on('file', function (fieldname, file, filename) {
+        console.log("Uploading: " + filename);
+        
+        fstream = fs.createWriteStream(filesDirectory + '/files/' +  id + '/' + filename);
+        file.pipe(fstream);
+        fstream.on('close', function () {
+            return res.redirect('/seguimiento');
+        });
+    });
+
+
 });
 /* router.post("/del", (req, res, next) => {
     DenunciaLists.deleteAll().then(newDenuncia => {

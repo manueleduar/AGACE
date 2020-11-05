@@ -3,6 +3,7 @@ $(document).ready(function() {
 });
 
 function load (){
+    
     let count = 0;
     const addedRFCs = new Set();
     $.ajax({
@@ -23,7 +24,22 @@ function load (){
     $('#denunciaBtn').on('click', function(e){
         e.preventDefault();
         let rfcs = [];
+        let rfcValidate = true;
+        if(!validateForm())
+            return 0;
         addedRFCs.forEach(rfc =>{
+            if($("#rfc"+rfc).hasClass("invalid")){
+                rfcValidate = false;
+            }
+            else if(!$('#adm'+rfc).val()){
+                $('#adm'+rfc).parent().removeClass("valid");
+                $('#adm'+rfc).parent().addClass("invalid");
+                rfcValidate = false;
+            }
+            else{
+                $('#adm'+rfc).parent().removeClass("invalid");
+                $('#adm'+rfc).parent().addClass("valid");
+            }
             rfcs.push(
                 {
                     rfc: $("#rfc"+rfc).val(),
@@ -36,13 +52,26 @@ function load (){
                 }
             )
         });
+
+        if(rfcValidate == false)
+            return 0;
+        var files = $('#archivos')[0].files;
+        var form = new FormData();
+        var fileNames = []
+        for( let i=0; i<files.length; i++){
+            console.log(files[i])
+            fileNames.push(files[i].name)
+            form.append('files[]', files[i]);
+        }
+      
         let sendData = {
-                descripcion: $('#desc').val(),
-                tema: $('#temaS').val(),
-                adminstracionLider: $('#adm').val(),
-                origen: $('#orig').val(),
-                medioRecepcion: $('#medio').val(),
-                rfcs : rfcs
+            descripcion: $('#desc').val(),
+            tema: $('#temaS').val(),
+            adminstracionLider: $('#adm').val(),
+            origen: $('#orig').val(),
+            medioRecepcion: $('#medio').val(),
+            rfcs : rfcs,
+            documentos: fileNames
         };
         sendData = JSON.stringify(sendData);
 
@@ -57,9 +86,22 @@ function load (){
                 // Whatever you want to do after the form is successfully submitted
             }
         }).done( data =>{
-            console.log(data);
+            console.log(data); 
+            $.ajax({
+                url: '/api/denuncias/archivo?id='+data._id,
+                type: 'post',
+                enctype: 'multipart/form-data',
+                data: form,
+                processData: false, 
+                cache: false,
+                contentType: false 
+            }).done( data =>{
+                window.location = '/seguimiento';
+                console.log("Archivo uploaded")
+            });
         });
     });
+
     $("#addRFC").click( (e) =>{
         e.preventDefault();
         count++;
@@ -74,8 +116,8 @@ function load (){
                 '</select>'+
                 '<label>Administracion Asignado</label>'+
            ' </div>'+
-            '<div class="input-field col s3">'+
-            '<input  id="rfc'+count+'" type="text" class="validate rfcInp">'+
+            '<div class="input-field col s3 rfcss">'+
+            '<input  id="rfc'+count+'" type="text" class="validate rfcInp" maxlength = "13" >'+
             '<label for="rfc'+count+'">RFC</label>'+
             '</div>'+
             '<div class="input-field col s2">'+
@@ -87,8 +129,10 @@ function load (){
             '</div>'+
         '</div>')
         $('select').formSelect();
+        $('.rfcss > input').characterCounter();
 
     });
+
     $("#rfcs").on("click", ".removeRFC", function(){
         let id = $(this).attr('id');
         id = id.slice(1);
@@ -104,10 +148,6 @@ function load (){
         let rfcLen =  rfc.val().length;
 
         if (rfcLen < 12) {
-            $("#tipo"+id).val("");
-            rfc.removeClass("valid");
-            rfc.addClass("invalid");
-        } else if(rfcLen > 13){
             $("#tipo"+id).val("");
             rfc.removeClass("valid");
             rfc.addClass("invalid");
@@ -133,6 +173,50 @@ function remove(id){
     })
 }
 
+function validateForm(){
+    if(!$('#desc').val().length){
+        $('#desc').removeClass("valid");
+        $('#desc').addClass("invalid");
+        return false;
+    }
+    $('#desc').removeClass("invalid");
+    $('#desc').addClass("valid");
+
+    if(!$('#temaS').val()){
+        $('#temaS').parent().removeClass("valid");
+        $('#temaS').parent().addClass("invalid");
+        return false;
+    }
+    $('#temaS').parent().removeClass("invalid");
+    $('#temaS').parent().addClass("valid");
+
+    if(!$('#adm').val()){
+        $('#adm').parent().removeClass("valid");
+        $('#adm').parent().addClass("invalid");
+        return false;
+    }
+    $('#adm').parent().removeClass("invalid");
+    $('#adm').parent().addClass("valid");
+
+    if(!$('#orig').val()){
+        $('#orig').parent().removeClass("valid");
+        $('#orig').parent().addClass("invalid");
+        return false;
+    }
+    $('#orig').parent().removeClass("invalid");
+    $('#orig').parent().addClass("valid");
+
+    if(!$('#medio').val()){
+        $('#medio').parent().removeClass("valid");
+        $('#medio').parent().addClass("invalid");
+        return false;
+    }
+    $('#medio').parent().removeClass("invalid");
+    $('#medio').parent().addClass("valid");
+       
+    return true;
+    
+}
 
 load();
 

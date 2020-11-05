@@ -8,8 +8,7 @@ const auth = require('./routes/auth');
 const publicDirectory = path.resolve('./public');
 const apidenuncias = require('./api/denuncias/denuncias');
 const apitemas = require('./api/temas/temas');
-
-
+var busboy = require('connect-busboy'); 
 
 require('dotenv').config();
 require('express-session')({
@@ -24,7 +23,8 @@ db.init();
 /**
  * Application middlewares
  */
-app.use(express.json())
+app.use(express.json());
+app.use(busboy());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());

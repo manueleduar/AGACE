@@ -29,12 +29,12 @@
           <form  class="denunciasForm col s12" id="denuncia">
             <div class="row">
                 <div class="input-field">
-                    <textarea id="desc" class="materialize-textarea"></textarea><label for="desc">Descripcion</label>
+                    <textarea id="desc" class="validate materialize-textarea"></textarea><label for="desc">Descripcion</label>
                 </div>
             </div>
             <div class = "row">
                 <div class="input-field">
-                   <select id="temaS">
+                   <select id="temaS" class ="validate">
                       <option value = "" disabled selected>Elige el tema</option>
                    </select>
                    <label>Tema</label>
@@ -78,11 +78,11 @@
                 <div class = "file-field input-field">
                     <div class = "btn">
                     <span>Buscar</span>
-                    <input type = "file" multiple />
+                    <input type = "file" multiple id="archivos" />
                     </div>    
                     <div class = "file-path-wrapper">
-                    <input class = "file-path validate" type = "text"
-                        placeholder = "A;ade los documentos adjuntos" />
+                    <input class = "file-path validate"  type = "text"
+                        placeholder = "Añade los documentos adjuntos" />
                     </div>
                 </div>
             </div>

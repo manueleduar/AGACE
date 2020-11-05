@@ -18,6 +18,7 @@ const Denuncia = new Schema({
     origen: String,
     medioRecepcion: String,
     adminstracionLider: String,
+    documentos: [String]
 });
 
 let denuncias = mongoose.model('denuncias', Denuncia, 'denuncias');
@@ -41,7 +42,7 @@ let DenunciaLists ={
                 throw Error( error );
             });
     },
-    /* deleteAll: () =>{
+/*     deleteAll: () =>{
         return denuncias.deleteMany({})
         .then( reporte => {
             return reporte;
