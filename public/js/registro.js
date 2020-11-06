@@ -1,4 +1,5 @@
 function init(){
+    selectInit();
     let password = document.querySelector("#password");
     let confPassword = document.querySelector("#confPassword");
 
@@ -32,3 +33,8 @@ function init(){
 }
 
 init();
+
+function selectInit(){
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
+}
