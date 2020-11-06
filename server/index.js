@@ -49,7 +49,9 @@ app.get('/denuncias', (req, res) => {
     res.sendFile(path.join(publicDirectory, "denuncias.html"));
   });
     
-  
+app.get('/catalogos', (req, res) => {
+  res.sendFile(path.join(publicDirectory, "catalogos.html"));
+});
 
 app.listen(port, (req, res) => {
     console.log(`App listening on port ${port}`);

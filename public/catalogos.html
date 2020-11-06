@@ -5,10 +5,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="../css/animal.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="./css/home.css">
+  <link rel="stylesheet" href="./css/catalogos.css">
   <title>AGACE</title>
 </head>
 <body>
@@ -20,27 +19,31 @@
           <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li><a href="/denuncias">Denuncias</a></li>
             <li><a href="/seguimiento">Seguimiento</a></li>
-            <li ><a href="/reportes">Reportes</a></li>
+            <li class="active"><a href="/catalogos">Catalogos</a></li>
           </ul>
         </div>
     </nav>
-    <div>
-        <h1 class = "center-align">Bienvenido, usuario</h1>
-    </div>
     <div class="row"></div>
         <!-- Dropdown Trigger -->
-    <div class="center-align">
-      <a id="btnDropdown" class='dropdown-trigger btn light-green darken-3' href='#' data-target='dropdown1'>Catalogos</a>
+    <div class="container" id="catalogosCard">
+      <div class="col s12 z-depth-6 card-panel">
+        <div class="center-align">
+          <a id="btnDropdown" class='dropdown-trigger btn light-green darken-3' href='#' data-target='dropdown1'>Catalogos</a>
+        </div>
+        <div class="row"></div>
+        <div id="catalogoContainer" class="row center-align col s12">
+        </div>
+      </div>
     </div>
-
+    
     <!-- Dropdown Structure -->
     <ul id='dropdown1' class='dropdown-content'>
-      <li><a href="#!">Usuarios</a></li>
-      <li><a href="#!">Administraciones</a></li>
-      <li><a href="#!">Temas</a></li>
-      <li><a href="#!">Insumos</a></li>
-      <li><a href="#!">Medios de recepcion</a></li>
+      <li><a id="catalogoUsuario">Usuarios</a></li>
+      <li><a id="catalogoAdministracion">Administraciones</a></li>
+      <li><a id="catalogoTema">Temas</a></li>
+      <li><a id="catalogoInsumo">Insumos</a></li>
+      <li><a id="catalogoMedios">Medios de recepcion</a></li>
     </ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script type="text/javascript" src="./js/home.js"></script>
+    <script type="text/javascript" src="./js/catalogos.js"></script>
 </body>
