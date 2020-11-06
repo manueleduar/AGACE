@@ -8,6 +8,7 @@ const auth = require('./routes/auth');
 const publicDirectory = path.resolve('./public');
 const apidenuncias = require('./api/denuncias/denuncias');
 const apitemas = require('./api/temas/temas');
+const apiReportes = require('./api/reportes/reportes');
 var busboy = require('connect-busboy'); 
 
 require('dotenv').config();
@@ -33,7 +34,7 @@ app.use(express.static(publicDirectory));
 app.use("/", auth);
 app.use('/api/denuncias',apidenuncias);
 app.use('/api/temas',apitemas);
-
+app.use('/api/reportes', apiReportes);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(publicDirectory, "index.html"));

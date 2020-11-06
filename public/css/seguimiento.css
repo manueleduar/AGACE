@@ -1,5 +1,4 @@
 table{
-    margin-top: 5%;
     border-collapse: collapse;
     width: 100%;
     text-align: left;
@@ -26,7 +25,11 @@ tr.header > th{
     background-color: #77b7ff;
 }
 
-.tableContainer{
-    
+.seguimientoContainer{
     padding: 0 10% 0 10%;
+}
+
+.reportes{
+    margin-top: 5%;
+    float: right;
 }
