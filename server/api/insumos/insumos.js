@@ -1,12 +1,11 @@
 let express = require('express');
 let router = express.Router();
-let {TemasList} = require('../../models/Tema');
-
+let Insumo = require('../../models/Insumo');
 
 router.get( "/", ( req, res, next ) => {  
-    TemasList.get()
-        .then( temas => {
-            return res.status( 200 ).json( temas );
+    Insumo.get()
+        .then( insumo => {
+            return res.status( 200 ).json( insumo );
         })
         .catch( error => {
             res.statusMessage = "Something went wrong with the DB. Try again later.";
@@ -18,17 +17,13 @@ router.get( "/", ( req, res, next ) => {
 });
 
 router.post( "/", ( req, res, next ) => {
-    let nombre = req.body.data;
-    if (!nombre) return res.status(500).json({
-        message: "Missing name for tema",
-        status: 500
-    })
-    let tema = {
-        nombre : nombre
+
+    let insumo = {
+        nombre : req.body.data
     }
-    TemasList.post(tema)
-        .then(newTema => {
-            return res.status(201).json(newTema);
+    Insumo.post(insumo)
+        .then(newInsumo => {
+            return res.status(201).json(newInsumo);
         })
         .catch(err => {
             res.statusMessage = err;

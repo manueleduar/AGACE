@@ -10,9 +10,7 @@ function load (){
         type: 'GET',
         url: '/api/temas'
     }).done(data =>{
-        console.log(data);
         data.forEach(element => {
-            console.log(element.nombre)
             $("#temaS").append(
                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
             )
@@ -20,6 +18,47 @@ function load (){
     }).then( () =>{
         $('select').formSelect();
     });
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/administraciones'
+    }).done(data =>{
+        data.forEach(element => {
+            $("#adm").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/insumos'
+    }).done(data =>{
+        data.forEach(element => {
+            $("#orig").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/medios_recepcion'
+    }).done(data =>{
+        data.forEach(element => {
+            $("#medio").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    
 
     $('#denunciaBtn').on('click', function(e){
         e.preventDefault();

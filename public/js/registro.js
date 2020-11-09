@@ -30,6 +30,9 @@ function init(){
             confPassword.classList.remove("valid");
         }
     })
+
+    // Administraciones
+    getAdministraciones();
 }
 
 init();
@@ -37,4 +40,18 @@ init();
 function selectInit(){
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, {});
+}
+
+function getAdministraciones() {
+    let administraciones = fetch('/api/administraciones').then(data =>{
+        console.log(data)
+        data.forEach(element => {
+            console.log(element.nombre)
+            $("#administration").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
 }
