@@ -65,16 +65,20 @@ router.post("/archivo", (req, res, next) => {
     console.log(id)
     if (!fs.existsSync(filesDirectory + '/files/' + id  +"/")){
         fs.mkdirSync(filesDirectory + '/files/' + id +"/",  {recursive: true});
-    }
+    } 
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename) {
         console.log("Uploading: " + filename);
         
-        fstream = fs.createWriteStream(filesDirectory + '/files/' +  id + '/' + filename);
+        fstream = fs.createWriteStream(filesDirectory + '/files/' + id + '/' + filename);
         file.pipe(fstream);
         fstream.on('close', function () {
-            return res.redirect('/seguimiento');
+            console.log('file ' + filename + ' uploaded');
         });
+    });
+    req.busboy.on('finish', function(){
+        console.log('finished');
+        return res.redirect('/seguimiento');
     });
 
 
