@@ -1,13 +1,6 @@
-const mongoose = require('mongoose');
+const temas = require('../db/models/Tema');
 
-const Schema = mongoose.Schema;
-const Tema = new Schema({
-    nombre: String
-});
-
-let temas = mongoose.model('temas', Tema, 'temas');
-
-let TemasList ={
+let TemaUtil ={
     get: ()=>{
         return temas.find() //Saca todos los temas
             .then( temas => {
@@ -47,6 +40,4 @@ let TemasList ={
     } */
 }
 
-module.exports = {
-    TemasList
-}
+module.exports = TemaUtil;

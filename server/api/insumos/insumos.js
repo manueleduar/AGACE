@@ -1,9 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let Insumo = require('../../models/Insumo');
+let InsumoUtil = require('../../utils/insumoUtil');
 
 router.get( "/", ( req, res, next ) => {  
-    Insumo.get()
+    InsumoUtil.get()
         .then( insumo => {
             return res.status( 200 ).json( insumo );
         })
@@ -18,10 +18,16 @@ router.get( "/", ( req, res, next ) => {
 
 router.post( "/", ( req, res, next ) => {
 
+    let nombre = req.body.data;
+    if (!nombre) return res.status(500).json({
+        message: "Missing name for insumo",
+        status: 500
+    })
+
     let insumo = {
-        nombre : req.body.data
+        nombre : nombre
     }
-    Insumo.post(insumo)
+    InsumoUtil.post(insumo)
         .then(newInsumo => {
             return res.status(201).json(newInsumo);
         })
@@ -36,7 +42,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemasList.deleteAll().then(newDenuncia => {
+    InsumoUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

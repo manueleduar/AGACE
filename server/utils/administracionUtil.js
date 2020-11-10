@@ -1,11 +1,4 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
-const Administracion = new Schema({
-    nombre: String
-});
-
-let administracion = mongoose.model('administraciones', Administracion, 'administaciones');
+const administracion = require('../db/models/Administracion');
 
 let AdministracionUtil ={
     get: ()=>{

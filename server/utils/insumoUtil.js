@@ -1,11 +1,4 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
-const Insumo = new Schema({
-    nombre: String
-});
-
-let insumo = mongoose.model('insumos', Insumo, 'insumos');
+const insumo = require('../db/models/Insumo');
 
 let InsumoUtil ={
     get: ()=>{

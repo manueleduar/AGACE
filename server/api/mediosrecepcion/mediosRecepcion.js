@@ -1,9 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let MedioRecepcion = require('../../models/MedioRecepcion');
+let MedioRecepcionUtil = require('../../utils/medioRecepcionUtil');
 
 router.get( "/", ( req, res, next ) => {  
-    MedioRecepcion.get()
+    MedioRecepcionUtil.get()
         .then( mediosRecepcion => {
             return res.status( 200 ).json( mediosRecepcion );
         })
@@ -18,10 +18,15 @@ router.get( "/", ( req, res, next ) => {
 
 router.post( "/", ( req, res, next ) => {
 
+    let nombre = req.body.data;
+    if (!nombre) return res.status(500).json({
+        message: "Missing name for medio de recepcion",
+        status: 500
+    })
     let medioRecepcion = {
-        nombre : req.body.data
+        nombre : nombre
     }
-    MedioRecepcion.post(medioRecepcion)
+    MedioRecepcionUtil.post(medioRecepcion)
         .then(newMedioRecepcion => {
             return res.status(201).json(newMedioRecepcion);
         })
@@ -36,7 +41,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemasList.deleteAll().then(newDenuncia => {
+    MedioRecepcionUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

@@ -211,7 +211,6 @@ function addAdmin() {
     })
     .then(element =>{
         if (element) {
-            console.log(element)
             let select = document.getElementById("administration");
             let opt = document.createElement('option');
             opt.value = element._id;
@@ -241,7 +240,6 @@ function addTema() {
     })
     .then(element =>{
         if (element) {
-            console.log(element)
             let select = document.getElementById("temaSelect");
             let opt = document.createElement('option');
             opt.value = element._id;
@@ -271,7 +269,6 @@ function addInsumo() {
     })
     .then(element =>{
         if (element) {
-            console.log(element)
             let select = document.getElementById("insumoSelect");
             let opt = document.createElement('option');
             opt.value = element._id;
@@ -300,7 +297,6 @@ function addMediosRecepcion() {
     })
     .then(element =>{
         if (element) {
-            console.log(element)
             let select = document.getElementById("medioSelect");
             let opt = document.createElement('option');
             opt.value = element._id;

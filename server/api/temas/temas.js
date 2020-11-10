@@ -1,10 +1,10 @@
 let express = require('express');
 let router = express.Router();
-let {TemasList} = require('../../models/Tema');
+let TemaUtil = require('../../utils/temaUtil');
 
 
 router.get( "/", ( req, res, next ) => {  
-    TemasList.get()
+    TemaUtil.get()
         .then( temas => {
             return res.status( 200 ).json( temas );
         })
@@ -26,7 +26,7 @@ router.post( "/", ( req, res, next ) => {
     let tema = {
         nombre : nombre
     }
-    TemasList.post(tema)
+    TemaUtil.post(tema)
         .then(newTema => {
             return res.status(201).json(newTema);
         })
@@ -41,7 +41,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemasList.deleteAll().then(newDenuncia => {
+    TemaUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

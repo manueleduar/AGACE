@@ -3,7 +3,6 @@ function load(){
         type: 'GET',
         url: '/api/denuncias'
     }).done(data =>{
-        console.log(data)
         data.forEach(element => {
             $("#denuncias").append(
                 '<tr>'+

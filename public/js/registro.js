@@ -44,9 +44,8 @@ function selectInit(){
 
 function getAdministraciones() {
     let administraciones = fetch('/api/administraciones').then(data =>{
-        console.log(data)
         data.forEach(element => {
-            console.log(element.nombre)
+
             $("#administration").append(
                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
             )

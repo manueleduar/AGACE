@@ -1,11 +1,4 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
-const MedioRecepcion = new Schema({
-    nombre: String
-});
-
-let medioRecepcion = mongoose.model('medios_recepcion', MedioRecepcion, 'medios_recepcion');
+const medioRecepcion = require('../db/models/MedioRecepcion');
 
 let MedioRecepcionUtil ={
     get: ()=>{
@@ -48,4 +41,4 @@ let MedioRecepcionUtil ={
 
 }
 
-module.exports = MedioRecepcionUtil
+module.exports = MedioRecepcionUtil;

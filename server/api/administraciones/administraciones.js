@@ -1,9 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let Administracion = require('../../models/Administracion');
+let AdministracionUtil = require('../../utils/administracionUtil');
 
 router.get( "/", ( req, res, next ) => {  
-    Administracion.get()
+    AdministracionUtil.get()
         .then( admin => {
             return res.status( 200 ).json( admin );
         })
@@ -21,7 +21,7 @@ router.post( "/", ( req, res, next ) => {
     let admin = {
         nombre : req.body.data
     }
-    Administracion.post(admin)
+    AdministracionUtil.post(admin)
         .then(newAdmin => {
             return res.status(201).json(newAdmin);
         })
@@ -36,7 +36,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemasList.deleteAll().then(newDenuncia => {
+    AdministracionUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

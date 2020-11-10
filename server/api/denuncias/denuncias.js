@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let {DenunciaLists} = require('../../models/Denuncia');
+let DenunciaUtil = require('../../utils/denunciaUtil');
 let { nanoid } = require( 'nanoid');
 const fs = require('fs');
 const path = require('path');
@@ -9,11 +9,12 @@ const filesDirectory = path.resolve('./server');
 
 
 router.get( "/", ( req, res, next ) => {  
-    DenunciaLists.get()
+    DenunciaUtil.get()
         .then( denuncias => {
             return res.status( 200 ).json( denuncias );
         })
         .catch( error => {
+            console.log(error);
             res.statusMessage = "Something went wrong with the DB. Try again later.";
             return res.status( 500 ).json({
                 status : 500,
@@ -26,7 +27,6 @@ router.get( "/", ( req, res, next ) => {
 
 router.post("/", (req, res, next) => {
     let newDenuncia = req.body;
-    console.log(newDenuncia);
 
     if (!newDenuncia.tema ||
         !newDenuncia.descripcion ||
@@ -43,8 +43,7 @@ router.post("/", (req, res, next) => {
     newDenuncia.rfcs.forEach(element => {
         element.id = nanoid(8);
     });
-    console.log(newDenuncia);
-    DenunciaLists.post(newDenuncia)
+    DenunciaUtil.post(newDenuncia)
         .then(newDenuncia => {
             return res.status(201).json(newDenuncia);
         })
@@ -80,7 +79,7 @@ router.post("/archivo", (req, res, next) => {
 
 });
 /* router.post("/del", (req, res, next) => {
-    DenunciaLists.deleteAll().then(newDenuncia => {
+    DenunciaUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

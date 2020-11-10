@@ -5,7 +5,7 @@ const path = require('path');
 const publicDirectory = path.resolve('./public');
 
 
-const User = require('../models/User');
+const User = require('../db/models/User');
 
 passport.use(User.createStrategy());
 
