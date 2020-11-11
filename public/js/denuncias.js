@@ -1,3 +1,5 @@
+let catalogos = {};
+
 $(document).ready(function() {
     $('select').formSelect();
 });
@@ -6,14 +8,17 @@ function load (){
     
     let count = 0;
     const addedRFCs = new Set();
+    catalogos.temas = new Map();
+    catalogos.administraciones = new Map();
+    catalogos.insumos = new Map();
+    catalogos.mediosRecepcion = new Map();
     $.ajax({
         type: 'GET',
         url: '/api/temas'
     }).done(data =>{
-        console.log(data);
         data.forEach(element => {
-            console.log(element.nombre)
-            $("#temaS").append(
+            catalogos.temas.set(element._id, element);
+            $("#temaSelect").append(
                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
             )
         });
@@ -21,34 +26,91 @@ function load (){
         $('select').formSelect();
     });
 
+    $.ajax({
+        type: 'GET',
+        url: '/api/administraciones'
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.administraciones.set(element._id, element);
+            $("#adm").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/insumos'
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.insumos.set(element._id, element);
+            $("#orig").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/medios_recepcion'
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.mediosRecepcion.set(element._id, element);
+            $("#medio").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    
+
     $('#denunciaBtn').on('click', function(e){
         e.preventDefault();
+        const temaID = $('#temaSelect').val();
+        const tema = catalogos.temas.get(temaID);
+
+        const adminID = $('#adm').val();
+        const admin = catalogos.administraciones.get(adminID);
+
+        const originID = $('#orig').val();
+        const origin = catalogos.insumos.get(originID);
+
+        const medioRecepcionID = $('#medio').val();
+        const medioRecepcion = catalogos.mediosRecepcion.get(medioRecepcionID);
         let rfcs = [];
         let rfcValidate = true;
         if(!validateForm())
             return 0;
         addedRFCs.forEach(rfc =>{
+            let admin = $('#adm'+rfc);
             if($("#rfc"+rfc).hasClass("invalid")){
                 rfcValidate = false;
             }
-            else if(!$('#adm'+rfc).val()){
-                $('#adm'+rfc).parent().removeClass("valid");
-                $('#adm'+rfc).parent().addClass("invalid");
+            else if(!admin.val()){
+                admin.parent().removeClass("valid");
+                admin.parent().addClass("invalid");
                 rfcValidate = false;
             }
             else{
-                $('#adm'+rfc).parent().removeClass("invalid");
-                $('#adm'+rfc).parent().addClass("valid");
+                admin.parent().removeClass("invalid");
+                admin.parent().addClass("valid");
             }
+            adminAsignada = catalogos.administraciones.get(admin.val());
             rfcs.push(
                 {
                     rfc: $("#rfc"+rfc).val(),
                     tipo: $("#tipo"+rfc).val(),
                     fecha: new Date(), 
-                    administracionAsignada: '', 
-                    estatus: '', 
-                    idprog: '',
-                    causaRechazo: '',
+                    administracionAsignada: adminAsignada, 
+                    estatus: '',  // TODO: Preguntar
+                    idprog: '', // TODO: Preguntar
+                    causaRechazo: '', // TODO: Preguntar
                 }
             )
         });
@@ -59,17 +121,16 @@ function load (){
         var form = new FormData();
         var fileNames = []
         for( let i=0; i<files.length; i++){
-            console.log(files[i])
             fileNames.push(files[i].name)
             form.append('files[]', files[i]);
         }
       
         let sendData = {
             descripcion: $('#desc').val(),
-            tema: $('#temaS').val(),
-            adminstracionLider: $('#adm').val(),
-            origen: $('#orig').val(),
-            medioRecepcion: $('#medio').val(),
+            tema: tema,
+            adminstracionLider: admin,
+            origen: origin,
+            medioRecepcion: medioRecepcion,
             rfcs : rfcs,
             documentos: fileNames
         };
@@ -86,7 +147,6 @@ function load (){
                 // Whatever you want to do after the form is successfully submitted
             }
         }).done( data =>{
-            console.log(data); 
             $.ajax({
                 url: '/api/denuncias/archivo?id='+data._id,
                 type: 'post',
@@ -97,7 +157,6 @@ function load (){
                 contentType: false 
             }).done( data =>{
                 window.location = '/seguimiento';
-                console.log("Archivo uploaded")
             });
         });
     });
@@ -109,12 +168,9 @@ function load (){
         $("#rfcs").append('<div class="row" id="r'+count+'"> '+
             '<div class="input-field col s4">'+
                 '<select id="adm'+count+'">'+
-                '<option value="" disabled selected>Elige el Administrador Asignado</option>'+
-                '<option value="1">Option 1</option>'+
-                ' <option value="2">Option 2</option>'+
-                '<option value="3">Option 3</option>'+
+                '<option value="" disabled selected>Elige la Administración Asignada</option>'+
                 '</select>'+
-                '<label>Administracion Asignado</label>'+
+                '<label>Administracion Asignada</label>'+
            ' </div>'+
             '<div class="input-field col s3 rfcss">'+
             '<input  id="rfc'+count+'" type="text" class="validate rfcInp" maxlength = "13" >'+
@@ -128,6 +184,13 @@ function load (){
             '<a class="btn-floating btn-small waves-effect waves-light red removeRFC" id="b'+count+'"><i class="material-icons">clear</i></a>'+
             '</div>'+
         '</div>')
+        let select = document.getElementById('adm'+count);
+        catalogos.administraciones.forEach(administracion => {
+            let opt = document.createElement('option');
+            opt.value = administracion._id;
+            opt.innerHTML = administracion.nombre;
+            select.appendChild(opt);
+        })
         $('select').formSelect();
         $('.rfcss > input').characterCounter();
 
@@ -138,7 +201,6 @@ function load (){
         id = id.slice(1);
         remove(id);
         addedRFCs.delete(Number(id));
-        console.log(addedRFCs)
     });
 
     $("#rfcs").on("keyup focusout", ".rfcInp",  (e) => {
@@ -182,13 +244,13 @@ function validateForm(){
     $('#desc').removeClass("invalid");
     $('#desc').addClass("valid");
 
-    if(!$('#temaS').val()){
-        $('#temaS').parent().removeClass("valid");
-        $('#temaS').parent().addClass("invalid");
+    if(!$('#temaSelect').val()){
+        $('#temaSelect').parent().removeClass("valid");
+        $('#temaSelect').parent().addClass("invalid");
         return false;
     }
-    $('#temaS').parent().removeClass("invalid");
-    $('#temaS').parent().addClass("valid");
+    $('#temaSelect').parent().removeClass("invalid");
+    $('#temaSelect').parent().addClass("valid");
 
     if(!$('#adm').val()){
         $('#adm').parent().removeClass("valid");

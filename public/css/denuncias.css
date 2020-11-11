@@ -1,3 +1,8 @@
-#denunciasCard{
-    margin: 0 10% 0 10%;
+body {
+    background: #F0F0F0
 }
+
+
+#denunciasCard {
+    width: 600px;
+ }

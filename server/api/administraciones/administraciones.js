@@ -1,12 +1,11 @@
 let express = require('express');
 let router = express.Router();
-let TemaUtil = require('../../utils/temaUtil');
-
+let AdministracionUtil = require('../../utils/administracionUtil');
 
 router.get( "/", ( req, res, next ) => {  
-    TemaUtil.get()
-        .then( temas => {
-            return res.status( 200 ).json( temas );
+    AdministracionUtil.get()
+        .then( admin => {
+            return res.status( 200 ).json( admin );
         })
         .catch( error => {
             res.statusMessage = "Something went wrong with the DB. Try again later.";
@@ -18,17 +17,13 @@ router.get( "/", ( req, res, next ) => {
 });
 
 router.post( "/", ( req, res, next ) => {
-    let nombre = req.body.data;
-    if (!nombre) return res.status(500).json({
-        message: "Missing name for tema",
-        status: 500
-    })
-    let tema = {
-        nombre : nombre
+
+    let admin = {
+        nombre : req.body.data
     }
-    TemaUtil.post(tema)
-        .then(newTema => {
-            return res.status(201).json(newTema);
+    AdministracionUtil.post(admin)
+        .then(newAdmin => {
+            return res.status(201).json(newAdmin);
         })
         .catch(err => {
             res.statusMessage = err;
@@ -41,7 +36,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemaUtil.deleteAll().then(newDenuncia => {
+    AdministracionUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {

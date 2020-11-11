@@ -1,12 +1,11 @@
 let express = require('express');
 let router = express.Router();
-let TemaUtil = require('../../utils/temaUtil');
-
+let MedioRecepcionUtil = require('../../utils/medioRecepcionUtil');
 
 router.get( "/", ( req, res, next ) => {  
-    TemaUtil.get()
-        .then( temas => {
-            return res.status( 200 ).json( temas );
+    MedioRecepcionUtil.get()
+        .then( mediosRecepcion => {
+            return res.status( 200 ).json( mediosRecepcion );
         })
         .catch( error => {
             res.statusMessage = "Something went wrong with the DB. Try again later.";
@@ -18,17 +17,18 @@ router.get( "/", ( req, res, next ) => {
 });
 
 router.post( "/", ( req, res, next ) => {
+
     let nombre = req.body.data;
     if (!nombre) return res.status(500).json({
-        message: "Missing name for tema",
+        message: "Missing name for medio de recepcion",
         status: 500
     })
-    let tema = {
+    let medioRecepcion = {
         nombre : nombre
     }
-    TemaUtil.post(tema)
-        .then(newTema => {
-            return res.status(201).json(newTema);
+    MedioRecepcionUtil.post(medioRecepcion)
+        .then(newMedioRecepcion => {
+            return res.status(201).json(newMedioRecepcion);
         })
         .catch(err => {
             res.statusMessage = err;
@@ -41,7 +41,7 @@ router.post( "/", ( req, res, next ) => {
         });
 });
 /* router.post("/del", (req, res, next) => {
-    TemaUtil.deleteAll().then(newDenuncia => {
+    MedioRecepcionUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);
     })
     .catch(err => {
