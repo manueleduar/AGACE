@@ -15,7 +15,7 @@ function load(){
                     '<td>'+element.admlider+'</td>'+
                     '<td>'+element.rfcs.length+'</td>'+
                     '<td>'+element.avanceaccpce+'%</td>'+
-                    '<td> <a class="waves-effect waves-light btn">Detalles</a></td>'+
+                    '<td> <a ref="/detalles.html" class="waves-effect waves-light btn">Detalles</a></td>'+
                 '</tr>'
             )
 

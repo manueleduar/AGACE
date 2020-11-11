@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="./css/detalles.css">
+    <title>Detalles</title>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-wrapper light-green darken-3">
+          <a href="#" class="sat-logo left">
+              <img src="./img/sat.png" style="max-width:50px; margin: 10px;">
+          </a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="/denuncias">Denuncias</a></li>
+            <li class="active"><a href="/seguimiento">Seguimiento</a></li>
+            <li ><a href="/reportes">Reportes</a></li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="detallesContainer">
+        <div class="row detalles">
+          <h2>Detalles de denuncia seleccionada</h2>
+        </div>
+        <div class="tableContainer">
+            <table id="denuncias">
+                <tr class="header">
+                    <th>Tema</th>
+                    <th>Descripcion</th>
+                    <th>Adm Asignada</th>
+                    <th>RFCs Asignados</th>
+                    <th>Avance</th>
+                    <th>Adm Lider</th>
+                    <th>RFC Totales</th>
+                    <th>Avance ACPPCE</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Laboral</td>
+                    <td>No se cumplió un contrato</td>
+                    <td>1</td>
+                    <td>HGHRGHRH</td>
+                    <td>50%</td>
+                    <td>Soi</td>
+                    <td>5</td>
+                    <td>60%</td>
+                    <td> <a class="waves-effect waves-light btn">Editar</a></td></tr>
+            </table>
+            <div class="botonesGyC">
+                <button type="button" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-danger">Cancelar</button>
+            </div>
+        </div>
+      </div>
+    
+</body>
+</html>
