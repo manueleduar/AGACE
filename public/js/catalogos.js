@@ -343,7 +343,7 @@ function addMediosRecepcion() {
 
 function deleteInsumo() {
     let insumoField = document.getElementById("insumoSelect");
-    let insumoValue = insumoField.options[insumoField.selectedIndex].text;
+    let insumoValue = insumoField.options[insumoField.selectedIndex].value;
     fetch('/api/insumos/deleteOne', {
         method: 'PATCH',
         body: JSON.stringify({"data": insumoValue}),
@@ -361,7 +361,7 @@ function deleteInsumo() {
 
 function deleteAdministracion() {
     let administracionField = document.getElementById("administration");
-    let administracionValue = administracionField.options[administracionField.selectedIndex].text;
+    let administracionValue = administracionField.options[administracionField.selectedIndex].value;
     fetch('/api/administraciones/deleteOne', {
         method: 'PATCH',
         body: JSON.stringify({"data": administracionValue}),
@@ -397,7 +397,8 @@ function deleteTema() {
 
 function deleteMedio() {
     let medioField = document.getElementById("medioSelect");
-    let medioValue = medioField.options[medioField.selectedIndex].text;
+    console.log(medioField.options[medioField.selectedIndex])
+    let medioValue = medioField.options[medioField.selectedIndex].value;
     fetch('/api/medios_recepcion/deleteOne', {
         method: 'PATCH',
         body: JSON.stringify({"data": medioValue}),

@@ -57,14 +57,14 @@ router.post( "/", ( req, res, next ) => {
 }); */
 
 router.patch("/deleteOne", (req, res, next) => {
-    let nombre = req.body.data;
-    if (!nombre) return res.status(500).json({
+    let id = req.body.data;
+    if (!id) return res.status(500).json({
         message: "Missing name for deleting insumo",
         status: 500
     })
 
     let insumo = {
-        nombre : nombre
+        _id : id
     }
 
     InsumoUtil.delete(insumo)

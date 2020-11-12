@@ -51,14 +51,14 @@ router.post( "/", ( req, res, next ) => {
 }); */
 
 router.patch("/deleteOne", (req, res, next) => {
-    let nombre = req.body.data;
-    if (!nombre) return res.status(500).json({
-        message: "Missing name for deleting administracion",
+    let id = req.body.data;
+    if (!id) return res.status(500).json({
+        message: "Missing ID for deleting administracion",
         status: 500
     })
 
     let administracion = {
-        nombre : nombre
+        _id : id
     }
 
     AdministracionUtil.delete(administracion)

@@ -56,14 +56,14 @@ router.post( "/", ( req, res, next ) => {
 }); */
 
 router.patch("/deleteOne", (req, res, next) => {
-    let nombre = req.body.data;
-    if (!nombre) return res.status(500).json({
+    let id = req.body.data;
+    if (!id) return res.status(500).json({
         message: "Missing name for deleting tema",
         status: 500
     })
 
     let tema = {
-        nombre : nombre
+        _id : id
     }
 
     TemaUtil.delete(tema)
