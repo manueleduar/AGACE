@@ -55,4 +55,30 @@ router.post( "/", ( req, res, next ) => {
     });
 }); */
 
+router.patch("/deleteOne", (req, res, next) => {
+    let nombre = req.body.data;
+    if (!nombre) return res.status(500).json({
+        message: "Missing name for deleting medio",
+        status: 500
+    })
+
+    let medio = {
+        nombre : nombre
+    }
+
+    MedioRecepcionUtil.delete(medio)
+    .then(deletedMedio => {
+        return res.status(201).json(deletedMedio);
+    })
+    .catch(err => {
+        res.statusMessage = err;
+        console.log(err)
+
+        return res.status(500).json({
+            message: err,
+            status: 500
+        })
+    });
+});
+
 module.exports = router;

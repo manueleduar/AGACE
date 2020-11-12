@@ -39,6 +39,15 @@ let MedioRecepcionUtil ={
         });
     } */
 
+    delete: (mediosName) => {
+        return medioRecepcion.findOneAndDelete(mediosName)
+        .then(result =>{
+            return  result;
+        })
+        .catch(err =>{
+            throw Error(err);
+        })
+    }
 }
 
 module.exports = MedioRecepcionUtil;

@@ -38,6 +38,16 @@ let TemaUtil ={
             throw Error( error );
         });
     } */
+
+    delete: (temaName) => {
+        return temas.findOneAndDelete(temaName)
+        .then(result =>{
+            return  result;
+        })
+        .catch(err =>{
+            throw Error(err);
+        })
+    }
 }
 
 module.exports = TemaUtil;

@@ -39,17 +39,25 @@ function temasForm(){
             <label>Eliminar tema</label>
         </div>
         <div class="input-field col s4">
-            <a class="waves-effect waves-light btn red">Eliminar</a>
+            <a class="waves-effect waves-light btn red" onclick="deleteTema()">Eliminar</a>
         </div>
         `;
-        
-        selectInit();
-        fetch('/api/temas')
-            .then(response => {
+        getTemas();
+    });
+}
+
+function getTemas(){
+    fetch('/api/temas')
+         .then(response => {
                 return response.json()
             })
             .then(data =>{
                 let select = document.getElementById("temaSelect");
+                select.innerHTML = `
+                <select id="temaSelect">
+                 <option value="" disabled selected>Escoge una opcion</option>
+                </select>
+                `
                 data.forEach(element => {
                     let opt = document.createElement('option');
                     opt.value = element._id;
@@ -59,7 +67,7 @@ function temasForm(){
             }).then( () =>{
                 $('select').formSelect();
             });
-    });
+    selectInit();
 }
 
 function administracionesForm(){
@@ -83,15 +91,23 @@ function administracionesForm(){
             <label>Eliminar administración</label>
         </div>
         <div class="input-field col s4">
-            <a class="waves-effect waves-light btn red">Eliminar</a>
+            <a class="waves-effect waves-light btn red" onclick="deleteAdministracion()">Eliminar</a>
         </div>
         `;
-        fetch('/api/administraciones')
+        getAdministraciones();
+    });
+}
+
+function getAdministraciones(){
+    fetch('/api/administraciones')
             .then(response => {
                 return response.json()
             })
             .then(data =>{
                 let select = document.getElementById("administration");
+                select.innerHTML = `<select id="administration">
+                <option value="" disabled selected>Escoge una opcion</option>
+                </select>`
                 data.forEach(element => {
                     let opt = document.createElement('option');
                     opt.value = element._id;
@@ -101,9 +117,7 @@ function administracionesForm(){
             }).then( () =>{
                 $('select').formSelect();
             });
-        });
         selectInit();
-
 }
 
 function insumosForm(){
@@ -127,26 +141,33 @@ function insumosForm(){
             <label>Eliminar Insumo</label>
         </div>
         <div class="input-field col s4">
-            <a class="waves-effect waves-light btn red">Eliminar</a>
+            <a class="waves-effect waves-light btn red" onclick="deleteInsumo()">Eliminar</a>
         </div>
         `;
-        fetch('/api/insumos')
-            .then(response => {
-                return response.json()
-            })
-            .then(data =>{
-                let select = document.getElementById("insumoSelect");
-                data.forEach(element => {
-                    let opt = document.createElement('option');
-                    opt.value = element._id;
-                    opt.innerHTML = element.nombre;
-                    select.appendChild(opt);
-                });
-            }).then( () =>{
-                $('select').formSelect();
-            });
+        getInsumos();
+    });
+}
+
+function getInsumos(){
+    fetch('/api/insumos')
+    .then(response => {
+        return response.json()
+    })
+    .then(data =>{
+        let select = document.getElementById("insumoSelect");
+        select.innerHTML = `<select id="insumoSelect">
+        <option value="" disabled selected>Escoge una opcion</option>
+        </select>`;
+        data.forEach(element => {
+            let opt = document.createElement('option');
+            opt.value = element._id;
+            opt.innerHTML = element.nombre;
+            select.appendChild(opt);
         });
-        selectInit();
+    }).then( () =>{
+        $('select').formSelect();
+    });
+    selectInit();
 }
 
 function mediosForm(){
@@ -170,15 +191,24 @@ function mediosForm(){
             <label>Eliminar Medio de Recepción</label>
         </div>
         <div class="input-field col s4">
-            <a class="waves-effect waves-light btn red">Eliminar</a>
+            <a class="waves-effect waves-light btn red" onclick="deleteMedio()">Eliminar</a>
         </div>
         `;
-        fetch('/api/medios_recepcion')
+        getMedios();
+    });
+}
+
+function getMedios(){
+    fetch('/api/medios_recepcion')
             .then(response => {
                 return response.json()
             })
             .then(data =>{
                 let select = document.getElementById("medioSelect");
+                select.innerHTML = `<select id="medioSelect">
+                <option value="" disabled selected>Escoge una opcion</option>
+                </select>
+                `
                 data.forEach(element => {
                     let opt = document.createElement('option');
                     opt.value = element._id;
@@ -188,9 +218,9 @@ function mediosForm(){
             }).then( () =>{
                 $('select').formSelect();
             });
-        });
         selectInit();
 }
+
 
 init();
 
@@ -308,4 +338,77 @@ function addMediosRecepcion() {
     .then( () =>{
         $('select').formSelect();
     });
+
+}
+
+function deleteInsumo() {
+    let insumoField = document.getElementById("insumoSelect");
+    let insumoValue = insumoField.options[insumoField.selectedIndex].text;
+    fetch('/api/insumos/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": insumoValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getInsumos();
+            return response.json();
+        }
+            
+    })
+}
+
+function deleteAdministracion() {
+    let administracionField = document.getElementById("administration");
+    let administracionValue = administracionField.options[administracionField.selectedIndex].text;
+    fetch('/api/administraciones/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": administracionValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getAdministraciones();
+            return response.json();
+        }
+            
+    })
+}
+
+function deleteTema() {
+    let temaField = document.getElementById("temaSelect");
+    let temaValue = temaField.options[temaField.selectedIndex].text;
+    fetch('/api/temas/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": temaValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getTemas();
+            return response.json();
+        }
+            
+    })
+}
+
+function deleteMedio() {
+    let medioField = document.getElementById("medioSelect");
+    let medioValue = medioField.options[medioField.selectedIndex].text;
+    fetch('/api/medios_recepcion/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": medioValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getMedios();
+            return response.json();
+        }
+            
+    })
 }

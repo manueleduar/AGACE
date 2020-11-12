@@ -1,3 +1,4 @@
+const { findOneAndDelete } = require('../db/models/Insumo');
 const insumo = require('../db/models/Insumo');
 
 let InsumoUtil ={
@@ -38,6 +39,15 @@ let InsumoUtil ={
             throw Error( error );
         });
     } */
+    delete: (insumoName) => {
+        return insumo.findOneAndDelete(insumoName)
+        .then(result =>{
+            return  result;
+        })
+        .catch(err =>{
+            throw Error(err);
+        })
+    }
 
 }
 
