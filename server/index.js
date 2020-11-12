@@ -7,7 +7,12 @@ const path = require('path');
 const auth = require('./routes/auth');
 const publicDirectory = path.resolve('./public');
 const apidenuncias = require('./api/denuncias/denuncias');
-
+const apitemas = require('./api/temas/temas');
+const apiReportes = require('./api/reportes/reportes');
+const apiAdministraciones = require('./api/administraciones/administraciones');
+const apiInsumos = require('./api/insumos/insumos');
+const apiMediosRecepcion = require('./api/mediosrecepcion/mediosRecepcion');
+var busboy = require('connect-busboy'); 
 
 require('dotenv').config();
 require('express-session')({
@@ -22,7 +27,8 @@ db.init();
 /**
  * Application middlewares
  */
-app.use(express.json())
+app.use(express.json());
+app.use(busboy());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,6 +36,11 @@ app.use(express.static(publicDirectory));
 
 app.use("/", auth);
 app.use('/api/denuncias',apidenuncias);
+app.use('/api/temas',apitemas);
+app.use('/api/reportes', apiReportes);
+app.use('/api/administraciones', apiAdministraciones);
+app.use('/api/insumos', apiInsumos);
+app.use('/api/medios_recepcion', apiMediosRecepcion);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(publicDirectory, "index.html"));
@@ -39,7 +50,14 @@ app.get("/", (req, res) => {
 app.get('/seguimiento', (req, res) => {
   res.sendFile(path.join(publicDirectory, "seguimiento.html"));
 });
-  
+
+app.get('/denuncias', (req, res) => {
+    res.sendFile(path.join(publicDirectory, "denuncias.html"));
+  });
+    
+app.get('/catalogos', (req, res) => {
+  res.sendFile(path.join(publicDirectory, "catalogos.html"));
+});
 
 app.listen(port, (req, res) => {
     console.log(`App listening on port ${port}`);

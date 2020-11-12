@@ -2,6 +2,7 @@ body {
     background: #F0F0F0
 }
 
+
 #loginCard {
     width: 400px;
  }
@@ -10,11 +11,11 @@ body {
     width: 300px;
 }
 
+input[type=submit] {
+    color: white;
+}
 .col {
     width: auto;
     margin-left: auto;
 }
 
-input[type=submit] {
-    color: white;
-}
