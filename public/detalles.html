@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><!--Import materialize.css-->
+
+    <link rel="stylesheet" href="./css/detalles.css">
+    <title>Detalles</title>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-wrapper light-green darken-3">
+          <a href="#" class="sat-logo left">
+              <img src="./img/sat.png" style="max-width:50px; margin: 10px;">
+          </a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="/denuncias">Denuncias</a></li>
+            <li class="active"><a href="/seguimiento">Seguimiento</a></li>
+            <li ><a href="/catalogos">Catalogos</a></li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="detallesContainer">
+        <div class="row detalles">
+          <h2>Detalles de denuncia seleccionada</h2>
+        </div>
+        <div class="tableContainer">
+            <table id="denuncias">
+                <tr class="header">
+                    <th>Tema</th>
+                    <th>Descripcion</th>
+                    <th>Fecha de Registro</th>
+                    <th>Adm Lider</th>
+                    <th>Origen de Insumo</th>
+                    <th>Medio de Recepcion</th>
+                    <th>Documentos</th>
+                </tr>
+            </table>
+        </div>
+      </div>
+      <div class="container" id=denunciasCard>
+
+      <div class = "row">
+        <div class="input-field">
+           <select id="rfcSelect" class ="validate">
+              <option value = "" disabled selected>Elige el rfc</option>
+           </select>
+           <label>RFC</label>
+        </div>           
+    </div>
+    <div class="input-field col s2 rfcDepend" hidden="true">
+        <input disabled id="tipo" value="" type="text" >
+        <label for="tipo">Tipo</label>
+    </div>
+    <div class="row rfcDepend" hidden="true">
+        <div class="input-field">
+            <select id="estatus">
+            <option value="" disabled selected>Elige el estatus</option>
+            </select>
+            <label>Estatus</label>
+        </div>
+    </div>
+    <div class="row rfcDepend" hidden="true">
+        <div class="input-field">
+            <select id="procedio">
+            <option value="" disabled selected>SI/NO</option>
+            <option value="Si"> Si</option>
+            <option value="No"> No</option>
+            </select>
+            <label>Procedio</label>
+        </div>
+    </div>
+    <div class="input-field col s3" id="idprogDiv" hidden="true">
+        <input  id="idprog" type="text" class="idprog" maxlength = "13" >
+        <label for="idprog">Id de Progreso</label>
+    </div>
+    <div class="row" id="causaRechazoDiv" hidden="true">
+        <div class="input-field">
+            <select id="causaRechazo">
+            <option value="" disabled selected>Elige la causa de rechazo</option>
+            </select>
+            <label>Causa de rechazo</label>
+        </div>
+    </div>
+    <div class="row rfcDepend" hidden="true">
+        <div class="input-field">
+            <textarea id="obser" class="materialize-textarea"></textarea><label for="obser">Observaciones</label>
+        </div>
+    </div>
+
+    <div class="botonesGyC">
+        <button type="button" class="btn btn-success" id="guardarBtn">Guardar</button>
+        <button type="button" class="btn btn-danger">Cancelar</button>
+    </div>
+      <div class="row">
+        <label style="font-size:20pt;">RFCs</label>
+        <div class="input-field" id="rfcs">
+
+        </div>
+        <div class="row" id="agregarRfc" hidden="true">
+            <button class="btn waves-effect waves-light right"  name="action" id="agregarBtn">Agregar RFCs</button>
+        </div>
+        <a class="btn-floating btn-small waves-effect waves-light green " id="addRFC"><i class="material-icons">add</i></a>
+    </div>
+    </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+
+      <script type="text/javascript" src="./js/detalles.js"></script>
+
+</body>
+</html>
