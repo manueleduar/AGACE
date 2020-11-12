@@ -63,7 +63,7 @@ function load(){
         data.documentos.forEach(element => {
             console.log(element)
             $("#documentos").append(
-                '<a href="FALTA LLAMADA A API PARA DESCARGAR" download>'+element+'</a>'
+                '<a href="FALTA LLAMADA A API PARA DESCARGAR" download>'+element+'</a><br>'
             )            
         })
         
