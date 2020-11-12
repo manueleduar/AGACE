@@ -9,3 +9,17 @@ body {
 #catalogosCard {
     width: 500px;
 }
+
+@media only screen and (max-width: 600px) {
+    #btnDropdown {
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+     }
+
+     #catalogosCard {
+        width: auto;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+  }
