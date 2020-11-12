@@ -379,7 +379,7 @@ function deleteAdministracion() {
 
 function deleteTema() {
     let temaField = document.getElementById("temaSelect");
-    let temaValue = temaField.options[temaField.selectedIndex].text;
+    let temaValue = temaField.options[temaField.selectedIndex].value;
     fetch('/api/temas/deleteOne', {
         method: 'PATCH',
         body: JSON.stringify({"data": temaValue}),
