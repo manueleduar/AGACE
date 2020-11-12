@@ -55,11 +55,12 @@ app.get('/denuncias', (req, res) => {
     res.sendFile(path.join(publicDirectory, "denuncias.html"));
   });
 
-  app.get('/detalles', (req, res) => {
-    res.sendFile(path.join(publicDirectory, "detalles.html"));
-  });
+app.get('/detalles', (req, res) => {
+  res.sendFile(path.join(publicDirectory+'/detalles.html'));
+});
     
 app.get('/catalogos', (req, res) => {
+ 
   res.sendFile(path.join(publicDirectory, "catalogos.html"));
 });
 

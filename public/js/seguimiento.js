@@ -8,13 +8,13 @@ function load(){
                 '<tr>'+
                     '<td>'+element.tema.nombre+'</td>'+ 
                     '<td>'+element.descripcion+'</td>'+
-                    '<td>'+element.admasignada+'</td>'+
-                    '<td>'+element.rfcs.length+'</td>'+
-                    '<td>'+element.avance+'%</td>'+
-                    '<td>'+element.admlider+'</td>'+
-                    '<td>'+element.rfcs.length+'</td>'+
-                    '<td>'+element.avanceaccpce+'%</td>'+
-                    '<td> <a ref="/detalles.html" class="waves-effect waves-light btn">Detalles</a></td>'+
+                    '<td>'+element.admasignada+'</td>'+ //TODO
+                    '<td>'+element.rfcs.length+'</td>'+ //TODO
+                    '<td>'+element.avance+'%</td>'+//TODO
+                    '<td>'+element.adminstracionLider.nombre+'</td>'+
+                    '<td>'+element.rfcs.length+'</td>'+ //TODO
+                    '<td>'+element.avanceaccpce+'%</td>'+//TODO
+                    '<td> <a href="/detalles?id='+element._id+'" class="waves-effect waves-light btn">Detalles</a></td>'+
                 '</tr>'
             )
 

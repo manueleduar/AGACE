@@ -4,7 +4,7 @@ table{
     text-align: left;
     border-spacing: 2px;
     border: 1px solid #ddd;
-    
+    margin-bottom: 50px;
 }
 th{
     background-color: white;
@@ -62,3 +62,8 @@ tr.header > th{
 .btn-danger:hover {
     background-color: rgb(243, 101, 101);
 }
+
+
+#rfcsCard {
+    width: 600px;
+ }

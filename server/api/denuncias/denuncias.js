@@ -24,6 +24,61 @@ router.get( "/", ( req, res, next ) => {
     
     
 });
+router.get( "/:id", ( req, res, next ) => {
+    const { id: denunciaId } = req.params;
+    DenunciaUtil.getbyId(denunciaId)
+        .then( denuncia => {
+            return res.status( 200 ).json( denuncia );
+        })
+        .catch( error => {
+            console.log(error);
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status( 500 ).json({
+                status : 500,
+                message : "Something went wrong with the DB. Try again later."
+            })
+        });
+    
+    
+});
+
+router.post( "/addRfc/:id", ( req, res, next ) => {
+    const { id: denunciaId } = req.params;
+    const rfcs  = req.body;
+    DenunciaUtil.addRfc(denunciaId, rfcs)
+        .then( denuncia => {
+            return res.status( 200 ).json( denuncia );
+        })
+        .catch( error => {
+            console.log(error);
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status( 500 ).json({
+                status : 500,
+                message : "Something went wrong with the DB. Try again later."
+            })
+        });
+});
+
+
+router.post( "/:id", ( req, res, next ) => {
+    const { id: denunciaId } = req.params;
+    let  rfc = req.body;
+    DenunciaUtil.updateRfc(denunciaId, rfc)
+        .then( denuncia => {
+            return res.status( 200 ).json( denuncia );
+        })
+        .catch( error => {
+            console.log(error);
+            res.statusMessage = "Something went wrong with the DB. Try again later.";
+            return res.status( 500 ).json({
+                status : 500,
+                message : "Something went wrong with the DB. Try again later."
+            })
+        });
+    
+    
+});
+
 
 router.post("/", (req, res, next) => {
     let newDenuncia = req.body;
