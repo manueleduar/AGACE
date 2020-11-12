@@ -19,6 +19,49 @@ let DenunciaUtil ={
                 throw Error( error );
             });
     },
+    getbyId:(id) =>{
+        return denuncias.findById(id) //Saca todos los admin
+            .then( denuncia => {
+                return denuncia;
+            })
+            .catch( error => {
+                throw Error( error );
+            });
+    },
+    updateRfc: async(id, rfc)=>{
+        try{
+            const denuncia = await denuncias.findOne({ _id: id });
+            if (denuncia.rfcs.some((e) => e.id == rfc.id)) {
+                const index = denuncia.rfcs.findIndex(
+                    (e) => e.id == rfc.id
+                );
+                denuncia.rfcs[index] = rfc
+                await denuncia.save();
+            } else {
+                throw Error( "No existe ese rfc en la denuncia" );
+            }
+        }
+        catch (error) {
+            console.log(`Error updating rfcs for ${id}`, error);
+            throw Error(error);
+        }
+        
+    },
+    addRfc: async(id, rfc) =>{
+        try{
+            const denuncia = await denuncias.findOne({ _id: id });
+            rfc.forEach(element => {
+                denuncia.rfcs.push(element)
+            });
+            await denuncia.save();
+            return denuncia;
+        }
+        catch (error) {
+            console.log(`Error adding rfcs for ${id}`, error);
+            throw Error(error);
+        }
+    }
+
 /*     deleteAll: () =>{
         return denuncias.deleteMany({})
         .then( reporte => {
