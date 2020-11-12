@@ -50,4 +50,29 @@ router.post( "/", ( req, res, next ) => {
     });
 }); */
 
+router.patch("/deleteOne", (req, res, next) => {
+    let nombre = req.body.data;
+    if (!nombre) return res.status(500).json({
+        message: "Missing name for deleting administracion",
+        status: 500
+    })
+
+    let administracion = {
+        nombre : nombre
+    }
+
+    AdministracionUtil.delete(administracion)
+    .then(deletedAdmin => {
+        return res.status(201).json(deletedAdmin);
+    })
+    .catch(err => {
+        res.statusMessage = err;
+        console.log(err)
+
+        return res.status(500).json({
+            message: err,
+            status: 500
+        })
+    });
+});
 module.exports = router;

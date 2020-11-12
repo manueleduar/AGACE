@@ -39,6 +39,15 @@ let AdministracionUtil ={
         });
     } */
 
+    delete: (administracionName) => {
+        return administracion.findOneAndDelete(administracionName)
+        .then(result =>{
+            return  result;
+        })
+        .catch(err =>{
+            throw Error(err);
+        })
+    }
 }
 
 module.exports = AdministracionUtil
