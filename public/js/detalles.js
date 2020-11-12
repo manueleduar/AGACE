@@ -264,21 +264,21 @@ function checkRFCSelect(){
     if(value.length){
         var rfcSelect = allRFCs[value]
         $(".rfcDepend").show()
+        console.log(rfcSelect.procedio)
         if(rfcSelect.procedio){
             $("#procedio").val("Si")
             $("#causaRechazoDiv").hide()
-            $("#idprog").show()
             $("#idprog").val(rfcSelect.idprog)
+            $("#idprogDiv").show()
         }
         else if(rfcSelect.procedio == false){
             $("#procedio").val("No")
-            $("#idprog").hide()
+            $("#idprogDiv").hide()
             $("#causaRechazoDiv").show()
-
         }
         else{
             $("#procedio").val("")
-            $("#idprog").hide()
+            $("#idprogDiv").hide()
             $("#causaRechazoDiv").hide()
         }
         if(rfcSelect.rfc.length == 12){
