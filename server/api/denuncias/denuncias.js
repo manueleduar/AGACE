@@ -60,7 +60,7 @@ router.post( "/addRfc/:id", ( req, res, next ) => {
 });
 
 
-router.post( "/:id", ( req, res, next ) => {
+router.post( "/updateRFC/:id", ( req, res, next ) => {
     const { id: denunciaId } = req.params;
     let  rfc = req.body;
     DenunciaUtil.updateRfc(denunciaId, rfc)
