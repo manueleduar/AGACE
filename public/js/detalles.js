@@ -84,7 +84,7 @@ function load(){
                 '<label>Administracion Asignada</label>'+
            ' </div>'+
             '<div class="input-field col s3 rfcss">'+
-            '<input  id="rfc'+count+'" type="text" class="validate rfcInp" maxlength = "13" >'+
+            '<input  id="rfc'+count+'" type="text" class="rfcInp" maxlength = "13" >'+
             '<label for="rfc'+count+'">RFC</label>'+
             '</div>'+
             '<div class="input-field col s2">'+
@@ -184,7 +184,7 @@ function load(){
         sendData = JSON.stringify(sendData);
 
         $.ajax({
-            url: '/api/denuncias/'+id,
+            url: '/api/denuncias/updateRFC/'+id,
             type: 'post',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
