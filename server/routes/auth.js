@@ -41,12 +41,12 @@ app.post('/login', (req, res, next) => {
     res.sendFile(path.join(publicDirectory, "index.html"));
   });
 
-  app.get('/logout', (req, res) => {
-    req.session.destroy();
-    console.log("logging out!");
-    res.send("logout success!");
-    res.redirect('/');
-  })
+  // app.get('/logout', (req, res) => {
+  //   req.session.destroy();
+  //   console.log("logging out!");
+  //   res.send("logout success!");
+  //   res.redirect('/');
+  // })
   
   app.get('/register', (req, res) => {
     res.sendFile(path.join(publicDirectory, "/pages/registro.html"));
