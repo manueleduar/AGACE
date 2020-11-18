@@ -33,3 +33,9 @@ tr.header > th{
     margin-top: 5%;
     float: right;
 }
+
+
+.logout {
+    right: 0;
+    position: absolute;
+}

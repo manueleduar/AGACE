@@ -19,3 +19,9 @@ input[type=submit] {
     margin-left: auto;
 }
 
+
+.logout {
+    right: 0;
+    position: absolute;
+}
+

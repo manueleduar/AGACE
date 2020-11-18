@@ -38,11 +38,12 @@ app.post('/login', (req, res, next) => {
   
   // TODO: This will be moved once the front-end is pushed
   app.get('/login', (req, res) => {
-    res.sendFile(path.join(publicDirectory, "index.html"));
+    if (req.isAuthenticated()) return res.redirect("/seguimiento");
+    res.sendFile(path.join(publicDirectory, "login.html"));
   });
   
   app.get('/register', (req, res) => {
-    res.sendFile(path.join(publicDirectory, "/pages/registro.html"));
+    res.sendFile(path.join(publicDirectory, "/registro.html"));
   });
 
   app.post('/register', (req, res, next) => {
@@ -68,6 +69,10 @@ app.post('/login', (req, res, next) => {
     
   });
 
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
 
 function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

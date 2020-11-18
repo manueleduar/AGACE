@@ -9,3 +9,9 @@ body {
 #catalogosCard {
     width: 500px;
 }
+
+
+.logout {
+    right: 0;
+    position: absolute;
+}
