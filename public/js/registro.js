@@ -29,7 +29,7 @@ function init(){
             confPassword.classList.remove("invalid");
             confPassword.classList.remove("valid");
         }
-    })
+    }) 
 
     // Administraciones
     getAdministraciones();
