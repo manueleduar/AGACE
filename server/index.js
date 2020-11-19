@@ -13,6 +13,8 @@ const apiReportes = require('./api/reportes/reportes');
 const apiAdministraciones = require('./api/administraciones/administraciones');
 const apiInsumos = require('./api/insumos/insumos');
 const apiMediosRecepcion = require('./api/mediosrecepcion/mediosRecepcion');
+const apiStatus = require('./api/status/status');
+const apiCausasRechazo = require('./api/causasRechazo/causasRechazo');
 const session = require('express-session');
 var busboy = require('connect-busboy'); 
 
@@ -49,6 +51,8 @@ app.use('/api/reportes', ensureAuthenticated,  apiReportes);
 app.use('/api/administraciones', ensureAuthenticated,  apiAdministraciones);
 app.use('/api/insumos', ensureAuthenticated,  apiInsumos);
 app.use('/api/medios_recepcion', ensureAuthenticated,  apiMediosRecepcion);
+app.use('/api/status', ensureAuthenticated,  apiStatus);
+app.use('/api/causasRechazo', ensureAuthenticated,  apiCausasRechazo);
 
 app.get("/", (req, res) => {
   if (req.isAuthenticated()){
