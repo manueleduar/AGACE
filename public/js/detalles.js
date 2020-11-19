@@ -221,9 +221,9 @@ function load(){
                 // Whatever you want to do after the form is successfully submitted
             }
         }).done(data =>{
-            loadRFCs(rfcs)
-            $("#rfcs").empty()
-            $('#agregarRfc').hide();
+            $('#modal1').modal();
+            $('#modal1').modal('open');
+            console.log("AAAA")
         });
     
     });

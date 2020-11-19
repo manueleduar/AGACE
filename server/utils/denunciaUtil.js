@@ -38,6 +38,7 @@ let DenunciaUtil ={
                 );
                 denuncia.rfcs[index] = rfc
                 await denuncia.save();
+                return "success";
             } else {
                 throw Error( "No existe ese rfc en la denuncia" );
             }
