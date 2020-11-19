@@ -5,7 +5,7 @@ $(document).ready(function() {
 });
 
 function load (){
-    
+    verifyProfile()
     let count = 0;
     const addedRFCs = new Set();
     catalogos.temas = new Map();
@@ -108,9 +108,9 @@ function load (){
                     tipo: $("#tipo"+rfc).val(),
                     fecha: new Date(), 
                     administracionAsignada: adminAsignada, 
-                    estatus: '',  // TODO: Preguntar
-                    idprog: '', // TODO: Preguntar
-                    causaRechazo: '', // TODO: Preguntar
+                    estatus: undefined,  // TODO: Preguntar
+                    idprog: undefined, // TODO: Preguntar
+                    causaRechazo: undefined, // TODO: Preguntar
                 }
             )
         });
@@ -278,6 +278,23 @@ function validateForm(){
        
     return true;
     
+}
+
+function verifyProfile(){
+    let userId = window.localStorage.getItem("user");
+    $.ajax({
+        type: 'GET',
+        url: '/api/user/'+userId
+    }).done(user =>{
+        console.log(user)
+        adminAsignada = user.administracionAsignada.nombre;
+        let profile = parseInt(user.profile)
+        if(profile)
+            $("#catalogoNav").hide()
+        else if(profile == 0)
+            $("#catalogoNav").show()
+        
+    });
 }
 
 load();

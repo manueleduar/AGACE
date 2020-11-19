@@ -2,10 +2,13 @@ const express = require('express');
 const app = express.Router();
 const passport = require('passport');
 const path = require('path');
+const administracion = require('../db/models/Administracion');
 const publicDirectory = path.resolve('./public');
 
 
 const User = require('../db/models/User');
+let AdministracionUtil = require('../utils/administracionUtil');
+
 
 passport.use(User.createStrategy());
 
@@ -24,12 +27,12 @@ app.post('/login', (req, res, next) => {
       if (!user) {
         return res.redirect('/login?info=' + info);
       }
-  
+      let userId = user._id
       req.logIn(user, function(err) {
         if (err) {
           return next(err);
         }
-  
+        return res.status(200).json({userId});
         return res.redirect('/seguimiento');
       });
   
@@ -48,23 +51,30 @@ app.post('/login', (req, res, next) => {
 
   app.post('/register', (req, res, next) => {
     let data = req.body;
-    if (!data.firstName || !data.lastName || !data.email || !data.password || !data.username) 
+    data.profile = 0
+    console.log(data)
+    if (!data.firstName || !data.lastName || !data.email || !data.password || !data.username || data.profile === undefined || !data.administration) 
       return res.redirect('/register?error=missingData'); 
-    
-    if (!validateEmail(data.email)) return res.redirect('/register?error=wrongEmail'); 
-    User.register({
-      username:data.username, 
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.lastName,
-      active: true
-    }, data.password).then((acc, err) => {
-      if (err) {
-        console.log("Error:", err)
-        return next(err);
-      }
-      return res.redirect("/")
-      
+     
+    if (!validateEmail(data.email)) return res.redirect('/register?error=wrongEmail');
+    console.log(data)
+    AdministracionUtil.getbyId(data.administration)
+    .then(administracionAsig =>{
+      User.register({
+        username:data.username, 
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.lastName,
+        profile: data.profile,
+        administracionAsignada : administracionAsig,
+        active: true
+      }, data.password).then((acc, err) => {
+        if (err) {
+          console.log("Error:", err)
+          return next(err);
+        }
+        return res.redirect("/")
+      });
     });
     
   });

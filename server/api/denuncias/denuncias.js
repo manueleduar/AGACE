@@ -137,6 +137,18 @@ router.post("/archivo", (req, res, next) => {
 
 
 });
+
+router.get("/archivo/download", (req, res, next) => { 
+    var id = req.query.id;
+    var filename = req.query.filename;
+    if (!fs.existsSync(filesDirectory + '/files/' + id  +"/"+filename)){
+        return res.status(500).json({
+            message: "No exsite el archivo " + id ,
+            status: 500
+        })
+    } 
+    res.download(filesDirectory + '/files/' + id  +"/"+filename);
+});
 /* router.post("/del", (req, res, next) => {
     DenunciaUtil.deleteAll().then(newDenuncia => {
         return res.status(201).json(newDenuncia);

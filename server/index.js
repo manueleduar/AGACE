@@ -13,6 +13,9 @@ const apiReportes = require('./api/reportes/reportes');
 const apiAdministraciones = require('./api/administraciones/administraciones');
 const apiInsumos = require('./api/insumos/insumos');
 const apiMediosRecepcion = require('./api/mediosrecepcion/mediosRecepcion');
+const apiUser = require('./api/user/user');
+const apiStatus = require('./api/status/status');
+const apiCausasRechazo = require('./api/causasRechazo/causasRechazo');
 const session = require('express-session');
 var busboy = require('connect-busboy'); 
 
@@ -43,12 +46,16 @@ app.use(passport.session());
 app.use(express.static(publicDirectory));
 
 app.use("/", auth);
-app.use('/api/denuncias', ensureAuthenticated, apidenuncias);
+app.use('/api/denuncias', apidenuncias);
 app.use('/api/temas', ensureAuthenticated, apitemas);
 app.use('/api/reportes', ensureAuthenticated,  apiReportes);
-app.use('/api/administraciones', ensureAuthenticated,  apiAdministraciones);
+app.use('/api/administraciones',  apiAdministraciones);
 app.use('/api/insumos', ensureAuthenticated,  apiInsumos);
 app.use('/api/medios_recepcion', ensureAuthenticated,  apiMediosRecepcion);
+app.use('/api/status', ensureAuthenticated,  apiStatus);
+app.use('/api/causasRechazo', ensureAuthenticated,  apiCausasRechazo);
+app.use('/api/user',ensureAuthenticated, apiUser);
+
 
 app.get("/", (req, res) => {
   if (req.isAuthenticated()){
