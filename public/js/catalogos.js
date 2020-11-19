@@ -107,8 +107,10 @@ function usuariosForm() {
         catalogoContainer.innerHTML = 
         `
         <div class="input-field col s12">
-              <a href="./registro.html" class="btn waves-effect waves-light col s12 light-green darken-3">Nuevo usuario</a>
-            </div>
+              <a href="./registro.html" class="btn waves-effect waves-light col s12 light-blue darken-3">Nuevo usuario</a>
+        </div>
+
+
         `;
     });
 }
