@@ -8,13 +8,37 @@ function selectInit(){
     var instances = M.FormSelect.init(elems, {});
 }
 
+function sideNavInit(){
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {});
+}
+
 function init(){
+    verifyProfile();
     dropdownInit();
-    //selectInit();
+    //sideNavInit();
     temasForm();
+    usuariosForm();
     administracionesForm();
     insumosForm();
     mediosForm();
+    statusForm();
+    causaRechazoForm();
+}
+
+function verifyProfile(){
+    let userId = window.localStorage.getItem("user");
+    fetch('/api/user/'+userId)
+        .then(data =>{
+            return data.json()
+        }).then(user =>{
+            console.log(user)
+            let profile = parseInt(user.profile)
+            if(profile){
+                document.getElementById("catalogoContainer").style.display = 'none';
+                window.location.href = "/seguimiento"
+            }
+        });
 }
 
 
@@ -98,6 +122,36 @@ function administracionesForm(){
     });
 }
 
+function usuariosForm() {
+    let catalogoContainer = document.querySelector("#catalogoContainer");
+    let catalogoUsuarios = document.querySelector("#catalogoUsuarios");
+    catalogoUsuarios.addEventListener("click", (event) => { 
+        event.preventDefault();
+        catalogoContainer.innerHTML = 
+        `
+        <div class="input-field col s12">
+              <a href="./registro.html" class="btn waves-effect waves-light col s12 light-blue darken-3">Nuevo usuario</a>
+        </div>
+
+
+        `;
+    });
+}
+
+
+// function getAdministraciones1() {
+//     let administraciones = fetch('/api/administraciones').then(data =>{
+//         data.forEach(element => {
+
+//             $("#administration1").append(
+//                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
+//             )
+//         });
+//     }).then( () =>{
+//         $('select').formSelect();
+//     });
+// }
+
 function getAdministraciones(){
     fetch('/api/administraciones')
             .then(response => {
@@ -111,7 +165,7 @@ function getAdministraciones(){
                 data.forEach(element => {
                     let opt = document.createElement('option');
                     opt.value = element._id;
-                    opt.innerHTML = element.nombre;
+                    opt.innerHTML= element.nombre;
                     select.appendChild(opt);
                 });
             }).then( () =>{
@@ -129,7 +183,7 @@ function insumosForm(){
         `
         <div class="input-field col s7 offset-s1">
             <input id="addInsumo" type="text" class="validate">
-            <label for="addInsumo">Agregar Insumo</label>
+            <label for="addInsumo">Agregar insumo</label>
         </div>
         <div class="input-field col s4">
             <a class="waves-effect waves-light btn blue" onclick="addInsumo()">Agregar</a>
@@ -138,7 +192,7 @@ function insumosForm(){
             <select id="insumoSelect">
             <option value="" disabled selected>Escoge una opcion</option>
             </select>
-            <label>Eliminar Insumo</label>
+            <label>Eliminar insumo</label>
         </div>
         <div class="input-field col s4">
             <a class="waves-effect waves-light btn red" onclick="deleteInsumo()">Eliminar</a>
@@ -179,7 +233,7 @@ function mediosForm(){
         `
         <div class="input-field col s7 offset-s1">
             <input id="addMedio" type="text" class="validate">
-            <label for="addMedio">Agregar Medio de Recepción</label>
+            <label for="addMedio">Agregar medio de recepción</label>
         </div>
         <div class="input-field col s4">
             <a class="waves-effect waves-light btn blue" onclick="addMediosRecepcion()">Agregar</a>
@@ -188,7 +242,7 @@ function mediosForm(){
             <select id="medioSelect">
             <option value="" disabled selected>Escoge una opcion</option>
             </select>
-            <label>Eliminar Medio de Recepción</label>
+            <label>Eliminar medio de recepción</label>
         </div>
         <div class="input-field col s4">
             <a class="waves-effect waves-light btn red" onclick="deleteMedio()">Eliminar</a>
@@ -221,6 +275,109 @@ function getMedios(){
         selectInit();
 }
 
+function statusForm(){
+    let catalogoContainer = document.querySelector("#catalogoContainer");
+    let catalogoStatus = document.querySelector("#catalogoStatus");
+    catalogoStatus.addEventListener("click", (event) => {
+        event.preventDefault();
+        catalogoContainer.innerHTML = 
+        `
+        <div class="input-field col s7 offset-s1">
+            <input id="addStatus" type="text" class="validate">
+            <label for="addStatus">Agregar estatus</label>
+        </div>
+        <div class="input-field col s4">
+            <a class="waves-effect waves-light btn blue" onclick="addStatus()">Agregar</a>
+        </div>
+        <div class="input-field col s7 offset-s1">
+            <select id="statusSelect">
+            <option value="" disabled selected>Escoge una opcion</option>
+            </select>
+            <label>Eliminar estatus</label>
+        </div>
+        <div class="input-field col s4">
+            <a class="waves-effect waves-light btn red" onclick="deleteStatus()">Eliminar</a>
+        </div>
+        `;
+        getStatus();
+    });
+}
+
+function getStatus(){
+    fetch('/api/status')
+         .then(response => {
+                return response.json()
+            })
+            .then(data =>{
+                let select = document.getElementById("statusSelect");
+                select.innerHTML = `
+                <select id="statusSelect">
+                 <option value="" disabled selected>Escoge una opcion</option>
+                </select>
+                `
+                data.forEach(element => {
+                    let opt = document.createElement('option');
+                    opt.value = element._id;
+                    opt.innerHTML = element.nombre;
+                    select.appendChild(opt);
+                });
+            }).then( () =>{
+                $('select').formSelect();
+            });
+    selectInit();
+}
+
+function causaRechazoForm(){
+    let catalogoContainer = document.querySelector("#catalogoContainer");
+    let catalogoCausas = document.querySelector("#catalogoCausas");
+    catalogoCausas.addEventListener("click", (event) => {
+        event.preventDefault();
+        catalogoContainer.innerHTML = 
+        `
+        <div class="input-field col s7 offset-s1">
+            <input id="addCausa" type="text" class="validate">
+            <label for="addCausa">Agregar causa de rechazo</label>
+        </div>
+        <div class="input-field col s4">
+            <a class="waves-effect waves-light btn blue" onclick="addCausa()">Agregar</a>
+        </div>
+        <div class="input-field col s7 offset-s1">
+            <select id="causaSelect">
+            <option value="" disabled selected>Escoge una opcion</option>
+            </select>
+            <label>Eliminar causa de rechazo</label>
+        </div>
+        <div class="input-field col s4">
+            <a class="waves-effect waves-light btn red" onclick="deleteCausa()">Eliminar</a>
+        </div>
+        `;
+        getCausasRechazo();
+    });
+}
+
+function getCausasRechazo(){
+    fetch('/api/causasRechazo')
+         .then(response => {
+                return response.json()
+            })
+            .then(data =>{
+                let select = document.getElementById("causaSelect");
+                select.innerHTML = `
+                <select id="causaSelect">
+                 <option value="" disabled selected>Escoge una opcion</option>
+                </select>
+                `
+                data.forEach(element => {
+                    let opt = document.createElement('option');
+                    opt.value = element._id;
+                    opt.innerHTML = element.nombre;
+                    select.appendChild(opt);
+                });
+            }).then( () =>{
+                $('select').formSelect();
+            });
+    selectInit();
+}
 
 init();
 
@@ -253,6 +410,7 @@ function addAdmin() {
         $('select').formSelect();
     });
 }
+
 
 function addTema() {
 
@@ -341,6 +499,65 @@ function addMediosRecepcion() {
 
 }
 
+function addStatus() {
+
+    let status = document.getElementById('addStatus').value;
+
+    fetch('/api/status', {
+        method: 'POST',
+        body: JSON.stringify({"data": status}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (response.ok)
+            return response.json()
+    })
+    .then(element =>{
+        if (element) {
+            let select = document.getElementById("statusSelect");
+            let opt = document.createElement('option');
+            opt.value = element._id;
+            opt.innerHTML = element.nombre;
+            select.appendChild(opt);
+            document.getElementById('addStatus').value = "";
+        }
+    })
+    .then( () =>{
+        $('select').formSelect();
+    });
+}
+
+function addCausa() {
+    let causaRechazo = document.getElementById('addCausa').value;
+
+    fetch('/api/causasRechazo', {
+        method: 'POST',
+        body: JSON.stringify({"data": causaRechazo}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok)
+            return response.json()
+    })
+    .then(element =>{
+        if (element) {
+            let select = document.getElementById("causaSelect");
+            let opt = document.createElement('option');
+            opt.value = element._id;
+            opt.innerHTML = element.nombre;
+            select.appendChild(opt);
+            document.getElementById('addCausa').value = "";
+        }
+    })
+    .then( () =>{
+        $('select').formSelect();
+    });
+
+}
+
 function deleteInsumo() {
     let insumoField = document.getElementById("insumoSelect");
     let insumoValue = insumoField.options[insumoField.selectedIndex].value;
@@ -408,6 +625,42 @@ function deleteMedio() {
     }).then(response => {
         if (response.ok){
             getMedios();
+            return response.json();
+        }
+            
+    })
+}
+
+function deleteStatus() {
+    let statusField = document.getElementById("statusSelect");
+    let statusValue = statusField.options[statusField.selectedIndex].value;
+    fetch('/api/status/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": statusValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getStatus();
+            return response.json();
+        }
+            
+    })
+}
+
+function deleteCausa() {
+    let causaField = document.getElementById("causaSelect");
+    let causaValue = causaField.options[causaField.selectedIndex].value;
+    fetch('/api/causasRechazo/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": causaValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getCausasRechazo();
             return response.json();
         }
             

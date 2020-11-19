@@ -5,3 +5,9 @@ body {
 #btnDropdown {
     width: 400px;
  }
+
+
+.logout {
+    right: 0;
+    position: absolute;
+}

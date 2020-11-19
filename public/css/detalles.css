@@ -1,3 +1,7 @@
+
+ body {
+    background: #F0F0F0
+}
 table{
     border-collapse: collapse;
     width: 100%;
@@ -18,14 +22,16 @@ td{
     padding: 15px;
     text-align: left;
     border: 1px solid black;
+    background-color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 tr:hover{
     background-color: #dfdfdf;
 }
 tr.header > th{
-    background-color: #91b0d4;
+    background-color: #77b7ff;
 }
+
 
 .buttonGuardar {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -67,3 +73,13 @@ tr.header > th{
 #rfcsCard {
     width: 600px;
  }
+
+
+ .logout {
+    right: 0;
+    position: absolute;
+}
+
+.modal1{
+    text-align: center;
+}

@@ -29,7 +29,7 @@ function init(){
             confPassword.classList.remove("invalid");
             confPassword.classList.remove("valid");
         }
-    })
+    }) 
 
     // Administraciones
     getAdministraciones();
@@ -42,15 +42,26 @@ function selectInit(){
     var instances = M.FormSelect.init(elems, {});
 }
 
-function getAdministraciones() {
-    let administraciones = fetch('/api/administraciones').then(data =>{
-        data.forEach(element => {
-
-            $("#administration").append(
-                '<option value = "'+element._id+'">' + element.nombre + '</option>'
-            )
-        });
-    }).then( () =>{
-        $('select').formSelect();
-    });
+function getAdministraciones(){
+    fetch('/api/administraciones')
+            .then(response => {
+                console.log("Entra 1");
+                return response.json()
+            })
+            .then(data =>{
+                console.log("Entra 2");
+                let select = document.getElementById("administration");
+                select.innerHTML = `<select id="administration">
+                <option value="" disabled selected>Escoge una opcion</option>
+                </select>`
+                data.forEach(element => {
+                    let opt = document.createElement('option');
+                    opt.value = element._id;
+                    opt.innerHTML = element.nombre;
+                    select.appendChild(opt);
+                });
+            }).then( () =>{
+                $('select').formSelect();
+            });
+        selectInit();
 }

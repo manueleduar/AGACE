@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Administracion = require('./administacion');
+const causaRechazo = require('./causaRechazo');
+const Status = require('./status');
 
 const Schema = mongoose.Schema;
 const RFC = new Schema({
@@ -8,11 +10,11 @@ const RFC = new Schema({
     administracionAsignada: Administracion, 
     rfc: String, 
     tipo: String, 
-    estatus:String, 
+    estatus:Status, 
     procedio:Boolean,
     idprog: String,
-    causaRechazo: String,
+    causaRechazo: causaRechazo,
     observaciones: [String]
-});
+}, {timestamps: true});
 
 module.exports = RFC;

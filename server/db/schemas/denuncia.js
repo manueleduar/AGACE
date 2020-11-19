@@ -15,6 +15,6 @@ const Denuncia = new Schema({
     medioRecepcion: MedioRecepcion,
     adminstracionLider: Administracion,
     documentos: [String]
-});
+}, {timestamps: true});
 
 module.exports = Denuncia;

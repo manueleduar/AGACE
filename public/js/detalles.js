@@ -15,20 +15,23 @@ const months = [
 
 let catalogos = {};
 let allRFCs = {};
+var id;
+var adminUser;
 
 $(document).ready(function() {
     $('select').formSelect();
 });
 
-function load(){
 
+
+function load(){
     let count = 0;
     const addedRFCs = new Set();
     catalogos.administraciones = new Map();
+    catalogos.status = new Map();
+    catalogos.rechazo = new Map();
     var url = new URL(window.location.href);
-    var id = url.searchParams.get("id");
-    console.log(id)
-    
+    id = url.searchParams.get("id");
     $.ajax({
         type: 'GET',
         url: '/api/administraciones'
@@ -42,34 +45,61 @@ function load(){
     }).then( () =>{
         $('select').formSelect();
     });
-
     $.ajax({
         type: 'GET',
-        url: '/api/denuncias/'+id
+        url: '/api/status'
     }).done(data =>{
-        console.log(data)
-        var fecha = new Date(data.fecha)
-        $("#denuncias").append(
-            '<tr>'+
-                '<td>'+data.tema.nombre+'</td>'+ 
-                '<td>'+data.descripcion+'</td>'+
-                '<td>'+fecha.getDate()+ ' '+ months[fecha.getMonth()]+ ' '+fecha.getFullYear()+'</td>'+
-                '<td>'+data.adminstracionLider.nombre+'</td>'+
-                '<td>'+data.origen.nombre+'</td>'+
-                '<td>'+data.medioRecepcion.nombre+'</td>'+
-                '<td id="documentos"></td>'+
-            '</tr>'
-        );
-        data.documentos.forEach(element => {
-            console.log(element)
-            $("#documentos").append(
-                '<a href="FALTA LLAMADA A API PARA DESCARGAR" download>'+element+'</a><br>'
-            )            
-        })
-        
-        loadRFCs(data.rfcs)
-        
-        
+        data.forEach(element => {
+            catalogos.status.set(element._id, element);
+            $("#estatus").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+    $.ajax({
+        type: 'GET',
+        url: '/api/causasRechazo'
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.rechazo.set(element._id, element);
+            $("#causaRechazo").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+
+    verifyProfile().then( userInfo =>{
+        adminUser = userInfo
+        $.ajax({
+            type: 'GET',
+            url: '/api/denuncias/'+id
+        }).done(data =>{
+            var fecha = new Date(data.fecha)
+            $("#denuncias").append(
+                '<tr>'+
+                    '<td>'+data.tema.nombre+'</td>'+ 
+                    '<td>'+data.descripcion+'</td>'+
+                    '<td>'+fecha.getDate()+ ' '+ months[fecha.getMonth()]+ ' '+fecha.getFullYear()+'</td>'+
+                    '<td>'+data.adminstracionLider.nombre+'</td>'+
+                    '<td>'+data.origen.nombre+'</td>'+
+                    '<td>'+data.medioRecepcion.nombre+'</td>'+
+                    '<td id="documentos"></td>'+
+                '</tr>'
+            );
+            data.documentos.forEach(element => {
+                $("#documentos").append(
+                    '<a href="/api/denuncias/archivo/download?id='+id+'&filename='+element+'" download>'+element+'</a><br>'
+                )            
+            })
+            
+            loadRFCs(data.rfcs)
+            
+            
+        });
     });
 
     $("#addRFC").click( (e) =>{
@@ -84,7 +114,7 @@ function load(){
                 '<label>Administracion Asignada</label>'+
            ' </div>'+
             '<div class="input-field col s3 rfcss">'+
-            '<input  id="rfc'+count+'" type="text" class="validate rfcInp" maxlength = "13" >'+
+            '<input  id="rfc'+count+'" type="text" class="rfcInp" maxlength = "13" >'+
             '<label for="rfc'+count+'">RFC</label>'+
             '</div>'+
             '<div class="input-field col s2">'+
@@ -143,7 +173,6 @@ function load(){
             return 0;
 
         sendRFCs = JSON.stringify(rfcs);
-        console.log(rfcs)
         $.ajax({
             url: '/api/denuncias/addRfc/'+id,
             type: 'post',
@@ -155,9 +184,6 @@ function load(){
                 // Whatever you want to do after the form is successfully submitted
             }
         }).done(data =>{
-            rfcs.forEach( rfc =>{
-                allRFCs[rfc.rfc] = rfc
-            });
             loadRFCs(rfcs)
             $("#rfcs").empty()
             $('#agregarRfc').hide();
@@ -168,23 +194,24 @@ function load(){
     $('#guardarBtn').on('click', function(e){
         e.preventDefault();
         let rfcSelect = allRFCs[$('#rfcSelect').val()]
-        console.log(rfcSelect)
+        let estatus = catalogos.status.get($('#estatus').val());
+        let rechazo = catalogos.rechazo.get($('#causaRechazo').val());
         let sendData = {
             id: rfcSelect.id,
             rfc: rfcSelect.rfc,
             tipo: rfcSelect.tipo,
             fecha: rfcSelect.fecha,
-            administracionAsignada: rfcSelect.adminAsignada, 
-            estatus: $('#estatus').val(),  // TODO: Preguntar
+            administracionAsignada: rfcSelect.administracionAsignada, 
+            estatus: estatus,  // TODO: Preguntar
             idprog: $('#idprog').val(), // TODO: Preguntar
             procedio: $('#procedio').val()  == "Si" ? true : false,
-            causaRechazo: $('#causaRechazo').val(), // TODO: Preguntar
+            causaRechazo:  $('#procedio').val()  == "Si" ? undefined : rechazo, // TODO: Preguntar
             observaciones: [$('#obser').val()]
         };
         sendData = JSON.stringify(sendData);
 
         $.ajax({
-            url: '/api/denuncias/'+id,
+            url: '/api/denuncias/updateRFC/'+id,
             type: 'post',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -194,12 +221,9 @@ function load(){
                 // Whatever you want to do after the form is successfully submitted
             }
         }).done(data =>{
-            rfcs.forEach( rfc =>{
-                allRFCs[rfc.rfc] = rfc
-            });
-            loadRFCs(rfcs)
-            $("#rfcs").empty()
-            $('#agregarRfc').hide();
+            $('#modal1').modal();
+            $('#modal1').modal('open');
+            console.log("AAAA")
         });
     
     });
@@ -261,10 +285,13 @@ function remove(id){
 
 function checkRFCSelect(){
     let value = $('#rfcSelect').val()
-    if(value.length){
+    if(value != null && value.length){
         var rfcSelect = allRFCs[value]
         $(".rfcDepend").show()
-        console.log(rfcSelect.procedio)
+
+        if(rfcSelect.estatus)
+            $("#estatus").val(rfcSelect.estatus._id)
+
         if(rfcSelect.procedio){
             $("#procedio").val("Si")
             $("#causaRechazoDiv").hide()
@@ -274,7 +301,11 @@ function checkRFCSelect(){
         else if(rfcSelect.procedio == false){
             $("#procedio").val("No")
             $("#idprogDiv").hide()
+
+            if(rfcSelect.causaRechazo)
+                $("#causaRechazo").val(rfcSelect.causaRechazo._id)
             $("#causaRechazoDiv").show()
+            $('select').formSelect();
         }
         else{
             $("#procedio").val("")
@@ -312,7 +343,7 @@ function showProcedio(){
 
 
 function loadRFCs(rfcs){
-    rfcs.forEach( rfc =>{
+    rfcs.filter( rfc => rfc.administracionAsignada.nombre === adminUser.adminAsig || adminUser.profile == 0).forEach(rfc =>{
         allRFCs[rfc.rfc] = rfc
         $("#rfcSelect").append(
             '<option value = "'+rfc.rfc+'">' + rfc.rfc + '</option>'
@@ -323,5 +354,39 @@ function loadRFCs(rfcs){
     showProcedio()
 }
 
+function downloadFile(){
+    let filename = $(this).text();
+    $.ajax({
+        type: 'GET',
+        url: '/api/archivo?id='+id+'&filename='+filename
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.administraciones.set(element._id, element);
+            $("#adm").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+}
+
+var verifyProfile = () =>{
+    return new Promise((resolve, reject) => {
+        let userId = window.localStorage.getItem("user");
+        $.ajax({
+            type: 'GET',
+            url: '/api/user/'+userId
+        }).done(user =>{
+            let profile = parseInt(user.profile)
+            if(profile)
+                $("#catalogoNav").hide()
+            else if(profile == 0)
+                $("#catalogoNav").show()
+            let userInfo = {profile : profile, adminAsig : user.administracionAsignada.nombre}
+            resolve (userInfo);
+        });
+    });
+}
 
 load()
