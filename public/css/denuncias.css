@@ -6,3 +6,9 @@ body {
 #denunciasCard {
     width: 600px;
  }
+
+
+.logout {
+    right: 0;
+    position: absolute;
+}

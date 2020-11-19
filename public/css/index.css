@@ -18,3 +18,9 @@ body {
 input[type=submit] {
     color: white;
 }
+
+
+.logout {
+    right: 0;
+    position: absolute;
+}

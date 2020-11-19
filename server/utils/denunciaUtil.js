@@ -11,6 +11,7 @@ let DenunciaUtil ={
             });
     },
     post: (newReporte) => {               //CREATE Reporte
+        if (newReporte.rfcs.length === 0) throw Error( "No se pueden añadir denuncias sin RFCs asignados" )
         return denuncias.create(newReporte)
             .then( reporte => {
                 return reporte;

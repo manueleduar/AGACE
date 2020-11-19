@@ -13,6 +13,6 @@ const RFC = new Schema({
     idprog: String,
     causaRechazo: String,
     observaciones: [String]
-});
+}, {timestamps: true});
 
 module.exports = RFC;

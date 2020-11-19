@@ -4,14 +4,14 @@ const xl = require('excel4node');
 const excelService = require('../../services/excelService');
 const workbook = require('excel4node/distribution/lib/workbook');
 
-router.get( "/", ( req, res, next ) => {  
-    let wb = _generateWorkbook();
+router.get( "/", async ( req, res, next ) => {  
+    let wb = await _generateWorkbook();
     _sendWorkbook(wb, res);
 });
 
-function _generateWorkbook() {
+async function _generateWorkbook() {
     
-    return excelService.generateWorkbook();
+    return await excelService.generateWorkbook();
     
 }
 function _sendWorkbook(workbook, response) { 

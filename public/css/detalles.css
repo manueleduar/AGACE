@@ -74,3 +74,8 @@ tr.header > th{
     width: 600px;
  }
 
+
+ .logout {
+    right: 0;
+    position: absolute;
+}
