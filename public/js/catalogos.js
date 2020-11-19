@@ -152,14 +152,14 @@ function usuariosForm() {
             </div>
 
             <div class="input-field">
-            <i class="material-icons prefix">account_balance</i>
-            <select name="usuarios" id="user">
-            <option value="-"> Escoge una opcion </option>
-            <option value="administrador"> Administrador </option>
-            <option value="regular"> regular </option>
-            </select>
-            <label>Usuarios</label>
-          </div>
+                <i class="material-icons prefix">account_box</i>
+                <select name="profile" id="profile">
+                <option value="" disabled selected>Escoge una opcion</option>
+                <option value="administrador"> Administrador </option>
+                <option value="regular"> Regular </option>
+                </select>
+                <label>Perfil</label>
+            </div>
 
             <div class="input-field">
               <i class="material-icons prefix">lock_outline</i> <input id="password" type="password" autocomplete="new-password" name="password" required> <label for="password">Contraseña</label>
@@ -181,12 +181,13 @@ function usuariosForm() {
           <label>Eliminar usuario</label>
       </div>
       <div class="input-field col s4">
-          <a class="waves-effect waves-light btn red" onclick="">Eliminar</a>
+          <a class="waves-effect waves-light btn red" onclick="deleteUser() ">Eliminar</a>
       </div>
 
           </div>
         `;
         getAdministraciones();
+        getUsers();
         selectInit();
     });
 }
@@ -212,13 +213,35 @@ function getAdministraciones(){
             })
             .then(data =>{
                 let select = document.getElementById("administration");
-                select.innerHTML = `<select id="administration">
+                select.innerHTML = `
                 <option value="" disabled selected>Escoge una opcion</option>
-                </select>`
+                `
                 data.forEach(element => {
                     let opt = document.createElement('option');
                     opt.value = element._id;
                     opt.innerHTML= element.nombre;
+                    select.appendChild(opt);
+                });
+            }).then( () =>{
+                $('select').formSelect();
+            });
+        selectInit();
+}
+function getUsers(){
+    fetch('/api/user/')
+            .then(response => {
+                return response.json()
+            })
+            .then(data =>{
+                console.log(data)
+                let select = document.getElementById("users");
+                select.innerHTML = `
+                <option value="" disabled selected>Escoge un usuario</option>
+                `
+                data.forEach(element => {
+                    let opt = document.createElement('option');
+                    opt.value = element._id;
+                    opt.innerHTML= element.username;
                     select.appendChild(opt);
                 });
             }).then( () =>{
@@ -681,6 +704,23 @@ function deleteMedio() {
             return response.json();
         }
             
+    })
+}
+function deleteUser() {
+    let usersField = document.getElementById("users");
+    console.log(usersField.options[usersField.selectedIndex])
+    let userValue = usersField.options[usersField.selectedIndex].value;
+    fetch('/api/user/deleteOne', {
+        method: 'PATCH',
+        body: JSON.stringify({"data": userValue}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (response.ok){
+            getUsers();
+            return response.json();
+        }         
     })
 }
 
