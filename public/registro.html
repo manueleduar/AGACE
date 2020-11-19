@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./css/registro.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title>Registro de denuncia</title>
 </head>
 <body>
   <div id="modal1" class="modal">
@@ -40,16 +40,16 @@
       <form action="/register" method="post" class="loginForm">
         <div class="row"></div>
         <div class="input-field">
-          <i class="material-icons prefix">face</i> <input id="firstName" type="text" name="firstName"> <label for="firstName">Nombre</label>
+          <i class="material-icons prefix">face</i> <input id="firstName" type="text" name="firstName" required> <label for="firstName">Nombre</label>
         </div>
         <div class="input-field">
-          <i class="material-icons prefix">face</i> <input id="lastName" type="text" name="lastName"> <label for="lastName">Apellido</label>
+          <i class="material-icons prefix">face</i> <input id="lastName" type="text" name="lastName" required> <label for="lastName">Apellido</label>
         </div>
         <div class="input-field">
-          <i class="material-icons prefix">mail_outline</i> <input class="validate" id="email" type="email" name="email" autocomplete="email"> <label for="email">Email</label>
+          <i class="material-icons prefix">mail_outline</i> <input class="validate" id="email" type="email" name="email" autocomplete="email" required> <label for="email">Email</label>
         </div>
         <div class="input-field">
-          <i class="material-icons prefix">account_circle</i> <input id="username" type="text" name="username" autocomplete="username"> <label for="username">RFC Corto</label>
+          <i class="material-icons prefix">account_circle</i> <input id="username" type="text" name="username" autocomplete="username" required> <label for="username">RFC Corto</label>
         </div>
         <div class="input-field">
           <i class="material-icons prefix">account_balance</i>
@@ -58,10 +58,10 @@
           <label>Administracion</label>
         </div>
         <div class="input-field">
-          <i class="material-icons prefix">lock_outline</i> <input id="password" type="password" autocomplete="new-password" name="password"> <label for="password">Contraseña</label>
+          <i class="material-icons prefix">lock_outline</i> <input id="password" type="password" autocomplete="new-password" name="password" required> <label for="password">Contraseña</label>
         </div>
         <div class="input-field">
-          <i class="material-icons prefix">lock_outline</i> <input id="confPassword" type="password" name="password2"> <label for="password2">Confirmar Contraseña</label>
+          <i class="material-icons prefix">lock_outline</i> <input id="confPassword" type="password" name="password2" required> <label for="password2">Confirmar Contraseña</label>
         </div>
         <div class="row">
           <div class="input-field col s12">

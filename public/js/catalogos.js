@@ -18,6 +18,7 @@ function init(){
     dropdownInit();
     //sideNavInit();
     temasForm();
+    usuariosForm();
     administracionesForm();
     insumosForm();
     mediosForm();
@@ -120,6 +121,36 @@ function administracionesForm(){
         getAdministraciones();
     });
 }
+
+function usuariosForm() {
+    let catalogoContainer = document.querySelector("#catalogoContainer");
+    let catalogoUsuarios = document.querySelector("#catalogoUsuarios");
+    catalogoUsuarios.addEventListener("click", (event) => { 
+        event.preventDefault();
+        catalogoContainer.innerHTML = 
+        `
+        <div class="input-field col s12">
+              <a href="./registro.html" class="btn waves-effect waves-light col s12 light-blue darken-3">Nuevo usuario</a>
+        </div>
+
+
+        `;
+    });
+}
+
+
+// function getAdministraciones1() {
+//     let administraciones = fetch('/api/administraciones').then(data =>{
+//         data.forEach(element => {
+
+//             $("#administration1").append(
+//                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
+//             )
+//         });
+//     }).then( () =>{
+//         $('select').formSelect();
+//     });
+// }
 
 function getAdministraciones(){
     fetch('/api/administraciones')
@@ -379,6 +410,7 @@ function addAdmin() {
         $('select').formSelect();
     });
 }
+
 
 function addTema() {
 
