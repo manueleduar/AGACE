@@ -129,12 +129,65 @@ function usuariosForm() {
         event.preventDefault();
         catalogoContainer.innerHTML = 
         `
-        <div class="input-field col s12">
-              <a href="./registro.html" class="btn waves-effect waves-light col s12 light-blue darken-3">Nuevo usuario</a>
-        </div>
+        <div class="col s12">
+          <form action="/register" method="post" class="loginForm">
+            <div class="row"></div>
+            <div class="input-field">
+              <i class="material-icons prefix">face</i> <input id="firstName" type="text" name="firstName" required> <label for="firstName">Nombre</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">face</i> <input id="lastName" type="text" name="lastName" required> <label for="lastName">Apellido</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">mail_outline</i> <input class="validate" id="email" type="email" name="email" autocomplete="email" required> <label for="email">Email</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">account_circle</i> <input id="username" type="text" name="username" autocomplete="username" required> <label for="username">RFC Corto</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">account_balance</i>
+              <select name="administration" id="administration">
+              </select>
+              <label>Administracion</label>
+            </div>
 
+            <div class="input-field">
+            <i class="material-icons prefix">account_balance</i>
+            <select name="usuarios" id="user">
+            <option value="-"> Escoge una opcion </option>
+            <option value="administrador"> Administrador </option>
+            <option value="regular"> regular </option>
+            </select>
+            <label>Usuarios</label>
+          </div>
 
+            <div class="input-field">
+              <i class="material-icons prefix">lock_outline</i> <input id="password" type="password" autocomplete="new-password" name="password" required> <label for="password">Contraseña</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">lock_outline</i> <input id="confPassword" type="password" name="password2" required> <label for="password2">Confirmar Contraseña</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <button class="btn waves-effect white-text waves-light col s12 light-green darken-3" id="registerBtn" type="submit" value="Registrar"> Registrar </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="input-field col s7 offset-s1">
+          <select id="users">
+          <option value="" disabled selected>Escoge una opcion</option>
+          </select>
+          <label>Eliminar usuario</label>
+      </div>
+      <div class="input-field col s4">
+          <a class="waves-effect waves-light btn red" onclick="">Eliminar</a>
+      </div>
+
+          </div>
         `;
+        getAdministraciones();
+        selectInit();
     });
 }
 
