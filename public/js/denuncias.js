@@ -108,9 +108,9 @@ function load (){
                     tipo: $("#tipo"+rfc).val(),
                     fecha: new Date(), 
                     administracionAsignada: adminAsignada, 
-                    estatus: '',  // TODO: Preguntar
-                    idprog: '', // TODO: Preguntar
-                    causaRechazo: '', // TODO: Preguntar
+                    estatus: undefined,  // TODO: Preguntar
+                    idprog: undefined, // TODO: Preguntar
+                    causaRechazo: undefined, // TODO: Preguntar
                 }
             )
         });
@@ -288,8 +288,11 @@ function verifyProfile(){
     }).done(user =>{
         console.log(user)
         adminAsignada = user.administracionAsignada.nombre;
-        if(user.profile)
+        let profile = parseInt(user.profile)
+        if(profile)
             $("#catalogoNav").hide()
+        else if(profile == 0)
+            $("#catalogoNav").show()
         
     });
 }

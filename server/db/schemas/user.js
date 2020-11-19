@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
+const Administracion = require('./administacion');
 
 const Schema = mongoose.Schema;
 const User = new Schema({
@@ -8,7 +9,8 @@ const User = new Schema({
     email: String,
     firstName: String,
     lastName: String,
-    profile: String
+    profile: String,
+    administracionAsignada: Administracion,
 }, {timestamps: true});
 
 User.plugin(passportLocalMongoose, {

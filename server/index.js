@@ -46,10 +46,10 @@ app.use(passport.session());
 app.use(express.static(publicDirectory));
 
 app.use("/", auth);
-app.use('/api/denuncias', ensureAuthenticated, apidenuncias);
+app.use('/api/denuncias', apidenuncias);
 app.use('/api/temas', ensureAuthenticated, apitemas);
 app.use('/api/reportes', ensureAuthenticated,  apiReportes);
-app.use('/api/administraciones', ensureAuthenticated,  apiAdministraciones);
+app.use('/api/administraciones',  apiAdministraciones);
 app.use('/api/insumos', ensureAuthenticated,  apiInsumos);
 app.use('/api/medios_recepcion', ensureAuthenticated,  apiMediosRecepcion);
 app.use('/api/status', ensureAuthenticated,  apiStatus);

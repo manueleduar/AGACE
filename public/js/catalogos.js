@@ -28,8 +28,12 @@ function init(){
 function verifyProfile(){
     let userId = window.localStorage.getItem("user");
     fetch('/api/user/'+userId)
-        .then(user =>{
-            if(user.profile){
+        .then(data =>{
+            return data.json()
+        }).then(user =>{
+            console.log(user)
+            let profile = parseInt(user.profile)
+            if(profile){
                 document.getElementById("catalogoContainer").style.display = 'none';
                 window.location.href = "/seguimiento"
             }
