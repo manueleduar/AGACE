@@ -24,12 +24,12 @@ app.post('/login', (req, res, next) => {
       if (!user) {
         return res.redirect('/login?info=' + info);
       }
-  
+      let userId = user._id
       req.logIn(user, function(err) {
         if (err) {
           return next(err);
         }
-  
+        return res.status(200).json({userId});
         return res.redirect('/seguimiento');
       });
   
@@ -47,7 +47,7 @@ app.post('/login', (req, res, next) => {
 
   app.post('/register', (req, res, next) => {
     let data = req.body;
-    if (!data.firstName || !data.lastName || !data.email || !data.password || !data.username) 
+    if (!data.firstName || !data.lastName || !data.email || !data.password || !data.username || !data.profile) 
       return res.redirect('/register?error=missingData'); 
     
     if (!validateEmail(data.email)) return res.redirect('/register?error=wrongEmail'); 
@@ -56,6 +56,7 @@ app.post('/login', (req, res, next) => {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.lastName,
+      profile: data.profile,
       active: true
     }, data.password).then((acc, err) => {
       if (err) {

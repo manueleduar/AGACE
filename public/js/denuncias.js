@@ -5,7 +5,7 @@ $(document).ready(function() {
 });
 
 function load (){
-    
+    verifyProfile()
     let count = 0;
     const addedRFCs = new Set();
     catalogos.temas = new Map();
@@ -278,6 +278,20 @@ function validateForm(){
        
     return true;
     
+}
+
+function verifyProfile(){
+    let userId = window.localStorage.getItem("user");
+    $.ajax({
+        type: 'GET',
+        url: '/api/user/'+userId
+    }).done(user =>{
+        console.log(user)
+        adminAsignada = user.administracionAsignada.nombre;
+        if(user.profile)
+            $("#catalogoNav").hide()
+        
+    });
 }
 
 load();

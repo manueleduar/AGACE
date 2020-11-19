@@ -8,6 +8,7 @@ const User = new Schema({
     email: String,
     firstName: String,
     lastName: String,
+    profile: String
 });
 
 User.plugin(passportLocalMongoose, {

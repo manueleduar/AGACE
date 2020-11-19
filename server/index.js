@@ -12,6 +12,8 @@ const apiReportes = require('./api/reportes/reportes');
 const apiAdministraciones = require('./api/administraciones/administraciones');
 const apiInsumos = require('./api/insumos/insumos');
 const apiMediosRecepcion = require('./api/mediosrecepcion/mediosRecepcion');
+const apiUser = require('./api/user/user');
+
 var busboy = require('connect-busboy'); 
 
 require('dotenv').config();
@@ -41,6 +43,7 @@ app.use('/api/reportes', apiReportes);
 app.use('/api/administraciones', apiAdministraciones);
 app.use('/api/insumos', apiInsumos);
 app.use('/api/medios_recepcion', apiMediosRecepcion);
+app.use('/api/user', apiUser);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(publicDirectory, "index.html"));

@@ -9,12 +9,24 @@ function selectInit(){
 }
 
 function init(){
+    verifyProfile();
     dropdownInit();
     //selectInit();
     temasForm();
     administracionesForm();
     insumosForm();
     mediosForm();
+}
+
+function verifyProfile(){
+    let userId = window.localStorage.getItem("user");
+    fetch('/api/user/'+userId)
+        .then(user =>{
+            if(user.profile){
+                document.getElementById("catalogoContainer").style.display = 'none';
+                window.location.href = "/seguimiento"
+            }
+        });
 }
 
 

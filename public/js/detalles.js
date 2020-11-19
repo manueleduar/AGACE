@@ -15,18 +15,19 @@ const months = [
 
 let catalogos = {};
 let allRFCs = {};
+var id;
 
 $(document).ready(function() {
     $('select').formSelect();
 });
 
 function load(){
-
+    verifyProfile()
     let count = 0;
     const addedRFCs = new Set();
     catalogos.administraciones = new Map();
     var url = new URL(window.location.href);
-    var id = url.searchParams.get("id");
+    id = url.searchParams.get("id");
     console.log(id)
     
     $.ajax({
@@ -63,7 +64,7 @@ function load(){
         data.documentos.forEach(element => {
             console.log(element)
             $("#documentos").append(
-                '<a href="FALTA LLAMADA A API PARA DESCARGAR" download>'+element+'</a><br>'
+                '<a href="/api/denuncias/archivo/download?id='+id+'&filename='+element+'" download>'+element+'</a><br>'
             )            
         })
         
@@ -323,5 +324,35 @@ function loadRFCs(rfcs){
     showProcedio()
 }
 
+function downloadFile(){
+    let filename = $(this).text();
+    $.ajax({
+        type: 'GET',
+        url: '/api/archivo?id='+id+'&filename='+filename
+    }).done(data =>{
+        data.forEach(element => {
+            catalogos.administraciones.set(element._id, element);
+            $("#adm").append(
+                '<option value = "'+element._id+'">' + element.nombre + '</option>'
+            )
+        });
+    }).then( () =>{
+        $('select').formSelect();
+    });
+}
+
+function verifyProfile(){
+    let userId = window.localStorage.getItem("user");
+    $.ajax({
+        type: 'GET',
+        url: '/api/user/'+userId
+    }).done(user =>{
+        console.log(user)
+        adminAsignada = user.administracionAsignada.nombre;
+        if(user.profile)
+            $("#catalogoNav").hide()
+        
+    });
+}
 
 load()
