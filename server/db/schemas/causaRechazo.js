@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const Tema = new Schema({
+const causaRechazo = new Schema({
     nombre: String
 }, {timestamps: true});
 
-module.exports = Tema;
+module.exports = causaRechazo;

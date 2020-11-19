@@ -9,7 +9,7 @@ const User = new Schema({
     firstName: String,
     lastName: String,
     profile: String
-});
+}, {timestamps: true});
 
 User.plugin(passportLocalMongoose, {
     selectFields: "username email firstName lastName"

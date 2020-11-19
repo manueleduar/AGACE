@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const passport = require('passport');
@@ -13,15 +14,16 @@ const apiAdministraciones = require('./api/administraciones/administraciones');
 const apiInsumos = require('./api/insumos/insumos');
 const apiMediosRecepcion = require('./api/mediosrecepcion/mediosRecepcion');
 const apiUser = require('./api/user/user');
-
+const apiStatus = require('./api/status/status');
+const apiCausasRechazo = require('./api/causasRechazo/causasRechazo');
+const session = require('express-session');
 var busboy = require('connect-busboy'); 
 
-require('dotenv').config();
-require('express-session')({
-    secret: process.env.SECRET_SESSION_TOKEN,
-    resave: false,
-    saveUninitialized: false
-});
+function ensureAuthenticated(req, res, next) {
+
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
 
 db.init();
 
@@ -29,6 +31,13 @@ db.init();
 /**
  * Application middlewares
  */
+
+app.use(session({
+    secret: process.env.SECRET_SESSION_TOKEN,
+    resave: false,    
+    saveUninitialized: false
+}))
+
 app.use(express.json());
 app.use(busboy());
 app.use(express.urlencoded({ extended: false }));
@@ -37,33 +46,39 @@ app.use(passport.session());
 app.use(express.static(publicDirectory));
 
 app.use("/", auth);
-app.use('/api/denuncias',apidenuncias);
-app.use('/api/temas',apitemas);
-app.use('/api/reportes', apiReportes);
-app.use('/api/administraciones', apiAdministraciones);
-app.use('/api/insumos', apiInsumos);
-app.use('/api/medios_recepcion', apiMediosRecepcion);
-app.use('/api/user', apiUser);
+app.use('/api/denuncias', ensureAuthenticated, apidenuncias);
+app.use('/api/temas', ensureAuthenticated, apitemas);
+app.use('/api/reportes', ensureAuthenticated,  apiReportes);
+app.use('/api/administraciones', ensureAuthenticated,  apiAdministraciones);
+app.use('/api/insumos', ensureAuthenticated,  apiInsumos);
+app.use('/api/medios_recepcion', ensureAuthenticated,  apiMediosRecepcion);
+app.use('/api/status', ensureAuthenticated,  apiStatus);
+app.use('/api/causasRechazo', ensureAuthenticated,  apiCausasRechazo);
+app.use('/api/user',ensureAuthenticated, apiUser);
+
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(publicDirectory, "index.html"));
+  if (req.isAuthenticated()){
+    res.redirect("/seguimiento");
+  } else {
+    res.redirect("/login");
+  } 
 })
 
 // TODO: Move to separate router, see "routes/"
-app.get('/seguimiento', (req, res) => {
+app.get('/seguimiento', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(publicDirectory, "seguimiento.html"));
 });
 
-app.get('/denuncias', (req, res) => {
+app.get('/denuncias', ensureAuthenticated, (req, res) => {
     res.sendFile(path.join(publicDirectory, "denuncias.html"));
   });
 
-app.get('/detalles', (req, res) => {
+app.get('/detalles', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(publicDirectory+'/detalles.html'));
 });
     
-app.get('/catalogos', (req, res) => {
- 
+app.get('/catalogos', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(publicDirectory, "catalogos.html"));
 });
 
