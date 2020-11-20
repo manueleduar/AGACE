@@ -62,17 +62,17 @@ let DenunciaUtil ={
             console.log(`Error adding rfcs for ${id}`, error);
             throw Error(error);
         }
-    }
+    },
 
-/*     deleteAll: () =>{
-        return denuncias.deleteMany({})
-        .then( reporte => {
-            return reporte;
+    delete: (denuncia) => {
+        return denuncias.findOneAndDelete(denuncia)
+        .then(result =>{
+            return  result;
         })
-        .catch( error => {
-            throw Error( error );
-        });
-    } */
+        .catch(err =>{
+            throw Error(err);
+        })
+    }
 }
 
 module.exports = DenunciaUtil;

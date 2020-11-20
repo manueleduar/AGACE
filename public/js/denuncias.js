@@ -10,6 +10,7 @@ function load (){
     const addedRFCs = new Set();
     catalogos.temas = new Map();
     catalogos.administraciones = new Map();
+    catalogos.administracionesAsig = new Map();
     catalogos.insumos = new Map();
     catalogos.mediosRecepcion = new Map();
     $.ajax({
@@ -19,20 +20,6 @@ function load (){
         data.forEach(element => {
             catalogos.temas.set(element._id, element);
             $("#temaSelect").append(
-                '<option value = "'+element._id+'">' + element.nombre + '</option>'
-            )
-        });
-    }).then( () =>{
-        $('select').formSelect();
-    });
-
-    $.ajax({
-        type: 'GET',
-        url: '/api/administraciones'
-    }).done(data =>{
-        data.forEach(element => {
-            catalogos.administraciones.set(element._id, element);
-            $("#adm").append(
                 '<option value = "'+element._id+'">' + element.nombre + '</option>'
             )
         });
@@ -68,6 +55,36 @@ function load (){
         $('select').formSelect();
     });
 
+
+    verifyProfile().then(userInfo => {
+        $.ajax({
+            type: 'GET',
+            url: '/api/administraciones'
+        }).done(data =>{
+            let adminLider;
+            if(userInfo.profile == 0){
+                data.forEach(element => {
+                    catalogos.administraciones.set(element._id, element);
+                    $("#adm").append(
+                        '<option value = "'+element._id+'">' + element.nombre + '</option>'
+                    )
+                });
+            }
+            else if(userInfo.profile){
+                adminLider = data.filter(admin => admin.nombre === userInfo.adminAsig);
+                catalogos.administraciones.set(adminLider[0]._id, adminLider[0])
+                $("#adm").append(
+                    '<option value = "'+adminLider[0]._id+'"selected>' + adminLider[0].nombre + '</option>'
+                )
+                data.forEach(element => {
+                    catalogos.administracionesAsig.set(element._id, element);
+                });
+            }
+            
+        }).then( () =>{
+            $('select').formSelect();
+        });
+    });
     
 
     $('#denunciaBtn').on('click', function(e){
@@ -101,7 +118,7 @@ function load (){
                 admin.parent().removeClass("invalid");
                 admin.parent().addClass("valid");
             }
-            adminAsignada = catalogos.administraciones.get(admin.val());
+            adminAsignada = catalogos.administracionesAsig.get(admin.val());
             rfcs.push(
                 {
                     rfc: $("#rfc"+rfc).val(),
@@ -185,7 +202,7 @@ function load (){
             '</div>'+
         '</div>')
         let select = document.getElementById('adm'+count);
-        catalogos.administraciones.forEach(administracion => {
+        catalogos.administracionesAsig.forEach(administracion => {
             let opt = document.createElement('option');
             opt.value = administracion._id;
             opt.innerHTML = administracion.nombre;
@@ -280,20 +297,21 @@ function validateForm(){
     
 }
 
-function verifyProfile(){
-    let userId = window.localStorage.getItem("user");
-    $.ajax({
-        type: 'GET',
-        url: '/api/user/'+userId
-    }).done(user =>{
-        console.log(user)
-        adminAsignada = user.administracionAsignada.nombre;
-        let profile = parseInt(user.profile)
-        if(profile)
-            $("#catalogoNav").hide()
-        else if(profile == 0)
-            $("#catalogoNav").show()
-        
+var verifyProfile = () =>{
+    return new Promise((resolve, reject) => {
+        let userId = window.localStorage.getItem("user");
+        $.ajax({
+            type: 'GET',
+            url: '/api/user/'+userId
+        }).done(user =>{
+            let profile = parseInt(user.profile)
+            if(profile)
+                $("#catalogoNav").hide()
+            else if(profile == 0)
+                $("#catalogoNav").show()
+            let userInfo = {profile : profile, adminAsig : user.administracionAsignada.nombre}
+            resolve (userInfo);
+        });
     });
 }
 

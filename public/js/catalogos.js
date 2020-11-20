@@ -32,7 +32,6 @@ function verifyProfile(){
         .then(data =>{
             return data.json()
         }).then(user =>{
-            console.log(user)
             let profile = parseInt(user.profile)
             if(profile){
                 document.getElementById("catalogoContainer").style.display = 'none';
@@ -233,7 +232,6 @@ function getUsers(){
                 return response.json()
             })
             .then(data =>{
-                console.log(data)
                 let select = document.getElementById("users");
                 select.innerHTML = `
                 <option value="" disabled selected>Escoge un usuario</option>
@@ -720,6 +718,11 @@ function deleteUser() {
         if (response.ok){
             getUsers();
             return response.json();
+        
+        }
+        else{
+            $('#modal1').modal();
+            $('#modal1').modal('open');
         }         
     })
 }
