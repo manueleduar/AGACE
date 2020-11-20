@@ -65,6 +65,7 @@ function load (){
             if(userInfo.profile == 0){
                 data.forEach(element => {
                     catalogos.administraciones.set(element._id, element);
+                    catalogos.administracionesAsig.set(element._id, element);
                     $("#adm").append(
                         '<option value = "'+element._id+'">' + element.nombre + '</option>'
                     )
