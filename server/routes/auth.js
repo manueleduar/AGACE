@@ -58,13 +58,14 @@ app.post('/login', (req, res, next) => {
 
   app.post('/register', (req, res, next) => {
     let data = req.body;
-    data.profile = 0
-    console.log(data)
+    let profile = 0;
     if (!data.firstName || !data.lastName || !data.email || !data.password || !data.username || data.profile === undefined || !data.administration) 
       return res.redirect('/register?error=missingData'); 
      
     if (!validateEmail(data.email)) return res.redirect('/register?error=wrongEmail');
-    console.log(data)
+    
+    if(data.profile == "regular")
+      profile = 1
     AdministracionUtil.getbyId(data.administration)
     .then(administracionAsig =>{
       User.register({
@@ -72,7 +73,7 @@ app.post('/login', (req, res, next) => {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.lastName,
-        profile: data.profile,
+        profile: profile,
         administracionAsignada : administracionAsig,
         active: true
       }, data.password).then((acc, err) => {
@@ -80,7 +81,7 @@ app.post('/login', (req, res, next) => {
           console.log("Error:", err)
           return next(err);
         }
-        return res.redirect("/")
+        return res.redirect("/catalogos")
       });
     });
     

@@ -11,14 +11,18 @@ function load(){
         $.ajax({
                type: "POST",
                url: url,
-               data: form.serialize(), // serializes the form's elements.
-               success: function(data)
-               {
-                   console.log(data)
-                    localStorage.setItem("user",    data.userId);
-                    window.location.href = "/seguimiento";
-               }
-        });    
+               data: form.serialize() // serializes the form's elements.
+        }).done(data => {
+            console.log(data)
+            if(typeof data !== 'object' && data !== null){
+                $('#modal2').modal();
+                $('#modal2').modal('open');
+            }
+            else{
+                localStorage.setItem("user",    data.userId);
+                window.location.href = "/seguimiento";    
+            }
+        });
     });
 
 }

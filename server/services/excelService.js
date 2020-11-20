@@ -28,11 +28,11 @@ let excelService = {
         "Administración Asignada",
         "RFC",
         "Tipo Persona",
-        // "Estatus",
-        // "Procedió",
-        // "ID Programación",
-        // "Causa Rechazo",
-        // "Observaciones"
+        "Estatus",
+        "Procedió",
+        "ID Programación",
+        "Causa Rechazo",
+        "Observaciones"
         
     ],
 
@@ -83,16 +83,61 @@ let excelService = {
                     rfcTemp.set( "tipoPersona", rfc.tipo );
 
                     // TODO: AÑANDIR LO FALTANTE DE ESTAUTUS, PROCEDIO ID PROG, CAUSA RECHAZO, OBSERVACIONES.
-                    
+
+                    if (rfc.procedio) {
+                        rfcTemp.set( "estatus", "ACEPTADO" )
+                        rfcTemp.set( "procedio", "SI" )
+                        if (rfc.idprog) {
+                            rfcTemp.set( "idProg", rfc.idprog )
+                        } else {
+                            if (rfc.id) {
+                                rfcTemp.set( "idProg", rfc.id )
+                            } else {
+                                rfcTemp.set( "idProg", "NA" )
+                            }
+                        }
+                        rfcTemp.set( "causaRechazo", "NA" );
+                    } else {
+                        rfcTemp.set( "idProg", "NA" )
+                        if (rfc.procedio === undefined) {
+                            rfcTemp.set( "estatus", "PENDIENTE" )
+                            rfcTemp.set( "procedio", "NA" )
+                            rfcTemp.set( "causaRechazo", "NA" );
+                        } else {
+                            rfcTemp.set( "estatus", "RECHAZADO" );
+                            rfcTemp.set( "procedio", "NO" )
+                            rfc.causaRechazo ?
+                                rfcTemp.set( "causaRechazo", rfc.causaRechazo.nombre ) :
+                                rfcTemp.set( "causaRechazo", "NA" );
+                        }
+
+                    }
+
+                    if (rfc.observaciones) {
+                        if (rfc.observaciones[0]){
+                            if (rfc.observaciones[0].nombre) {
+                                rfcTemp.set( "observaciones", rfc.observaciones[0].nombre );
+                            } else if (typeof rfc.observaciones[0] === String ) {
+                                rfcTemp.set( "observaciones", rfc.observaciones[0] );
+                            }
+                            else {
+                                rfcTemp.set( "observaciones", "NA" );
+                            }
+                        }
+                        else {
+                            rfcTemp.set( "observaciones", "NA" );
+                        }
+                    }
+                    else {
+                        rfcTemp.set( "observaciones", "NA" );
+                    }
+
+
+
                     rfcs.push(rfcTemp);
                 });
 
                 parsedResult.set( "rfcs", rfcs );
-                
-                // parsedResult.set( id, denuncia._id );
-                // parsedResult.set( id, denuncia._id );
-                // parsedResult.set( id, denuncia._id );
-                // parsedResult.set( id, denuncia._id );
 
                 return parsedResult;
 
@@ -115,6 +160,7 @@ let excelService = {
             // console.log(data)
             rowIndex = 2;
             data.forEach( entry => {
+                console.log(entry)
                 entry.get("rfcs").forEach(rfc => {
                     let columnIndex = 1;
                     entry.forEach(value =>{
