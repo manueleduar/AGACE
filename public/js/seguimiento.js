@@ -46,12 +46,12 @@ function load(){
 
 
 function calculateAdminRFC(rfcs, adminAsignada){
-    const rfcAdmin = rfcs.filter(rfc => rfc.administracionAsignada.nombre === adminAsignada);
+    const rfcAdmin = rfcs.filter(rfc => rfc.administracionAsignada && rfc.administracionAsignada.nombre === adminAsignada);
     return rfcAdmin.length
 }
 
 function calculateAvanceAdmin(rfcs, adminAsignada){
-    const rfcAdmin = rfcs.filter(rfc => rfc.administracionAsignada.nombre === adminAsignada);
+    const rfcAdmin = rfcs.filter(rfc => rfc.administracionAsignada && rfc.administracionAsignada.nombre === adminAsignada);
     let listos = 0;
     rfcAdmin.forEach(rfc =>{
         if(rfc.procedio != undefined){

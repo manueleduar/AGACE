@@ -17,6 +17,7 @@ let catalogos = {};
 let allRFCs = {};
 var id;
 var adminUser;
+var adminLider;
 
 $(document).ready(function() {
     $('select').formSelect();
@@ -74,11 +75,13 @@ function load(){
 
     verifyProfile().then( userInfo =>{
         adminUser = userInfo
+
         $.ajax({
             type: 'GET',
             url: '/api/denuncias/'+id
         }).done(data =>{
             var fecha = new Date(data.fecha)
+            adminLider = data.adminstracionLider.nombre
             $("#denuncias").append(
                 '<tr>'+
                     '<td>'+data.tema.nombre+'</td>'+ 
@@ -343,12 +346,22 @@ function showProcedio(){
 
 
 function loadRFCs(rfcs){
-    rfcs.filter( rfc => rfc.administracionAsignada.nombre === adminUser.adminAsig || adminUser.profile == 0).forEach(rfc =>{
-        allRFCs[rfc.rfc] = rfc
-        $("#rfcSelect").append(
-            '<option value = "'+rfc.rfc+'">' + rfc.rfc + '</option>'
-        )
-    });
+    if(adminUser.profile == 0 || adminUser.adminAsig == adminLider){
+        rfcs.forEach(rfc =>{
+            allRFCs[rfc.rfc] = rfc
+            $("#rfcSelect").append(
+                '<option value = "'+rfc.rfc+'">' + rfc.rfc + '</option>'
+            )
+        });
+    }
+    else if(adminUser.profile){
+        rfcs.filter( rfc => rfc.administracionAsignada.nombre === adminUser.adminAsig).forEach(rfc =>{
+            allRFCs[rfc.rfc] = rfc
+            $("#rfcSelect").append(
+                '<option value = "'+rfc.rfc+'">' + rfc.rfc + '</option>'
+            )
+        });
+    }
     $('select').formSelect();
     checkRFCSelect()
     showProcedio()
