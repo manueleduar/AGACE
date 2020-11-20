@@ -100,6 +100,7 @@ function load(){
             })
             
             loadRFCs(data.rfcs)
+            showDelete();
             
             
         });
@@ -399,6 +400,27 @@ var verifyProfile = () =>{
             let userInfo = {profile : profile, adminAsig : user.administracionAsignada.nombre}
             resolve (userInfo);
         });
+    });
+}
+
+function showDelete() {
+    if (adminUser.profile === 0) {
+        $("#borrar-denuncia").show()
+
+    } else {
+        $("#borrar-denuncia").hide()
+    }
+}
+
+function deleteDenuncia() {
+    $.ajax({
+        type: 'DELETE',
+        url: '/api/denuncias/'+id
+    }).done(denuncia =>{
+        
+        window.location.href = "/seguimiento";
+        
+        
     });
 }
 
