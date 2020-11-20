@@ -149,9 +149,20 @@ router.get("/archivo/download", (req, res, next) => {
     } 
     res.download(filesDirectory + '/files/' + id  +"/"+filename);
 });
-/* router.post("/del", (req, res, next) => {
-    DenunciaUtil.deleteAll().then(newDenuncia => {
-        return res.status(201).json(newDenuncia);
+router.delete("/:id", (req, res, next) => {
+    let id = req.params.id;
+    if (!id) return res.status(500).json({
+        message: "Missing id for deleting denuncias",
+        status: 500
+    })
+
+    let denuncia = {
+        _id : id
+    }
+
+    DenunciaUtil.delete(denuncia)
+    .then(deletedDenuncia => {
+        return res.status(201).json(deletedDenuncia);
     })
     .catch(err => {
         res.statusMessage = err;
@@ -162,7 +173,7 @@ router.get("/archivo/download", (req, res, next) => {
             status: 500
         })
     });
-}); */
+}); 
 
 
 module.exports = router;
