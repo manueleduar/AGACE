@@ -34,6 +34,10 @@ router.get( "/", ( req, res, next ) => {
 
 router.patch("/deleteOne", (req, res, next) => {
     let id = req.body.data;
+    if (req.user._id == id) return res.status(500).json({
+        message: "You cannot delete yourself!",
+        status: 500
+    })
     if (!id) return res.status(500).json({
         message: "Missing name for deleting tema",
         status: 500
